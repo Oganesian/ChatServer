@@ -1,18 +1,46 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Sockets;
-using System.Text;
-using System.Windows;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using ChatClient.ClientConnection;
+using ChatClient.Models;
 
 namespace ChatClient.ViewModels
 {
     class MainWindowViewModel : BindableBase
     {
-        const int PORT_NO = 8888;
-        const string SERVER_IP = "127.0.0.1";
-        private TcpClient client;
-        NetworkStream nwStream;
+        private MainWindowModel model;
+
+        #region Model reference types
+        private Client _client;
+        private ObservableCollection<string> _friends;
+        #endregion
+
+        #region Model Properties
+        public Client Client
+        {
+            get
+            {
+                return model.Client;
+            }
+            set
+            {
+                model.Client = value;
+                SetProperty(ref _client, value);
+            }
+        }
+
+        public ObservableCollection<string> Friends
+        {
+            get
+            {
+                return model.Friends;
+            }
+            set
+            {
+                model.Friends = value;
+                SetProperty(ref _friends, value);
+            }
+        }
+        #endregion
 
         #region Commands
         private ICommand _connectToServer;
@@ -21,7 +49,7 @@ namespace ChatClient.ViewModels
 
         public MainWindowViewModel()
         {
-            ConectToServerExec();
+            model = MainWindowModel.GetInstance();
         }
 
         #region Commands Getters
@@ -53,49 +81,12 @@ namespace ChatClient.ViewModels
 
         private void ConectToServerExec()
         {
-            try
-            {
-                client = new TcpClient(SERVER_IP, PORT_NO);
-                nwStream = client.GetStream();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Server is not available");
-            }            
 
-            //---data to send to the server---
-            //string textToSend = "Hello World";
-
-            //---create a TCPClient object at the IP and port no.---
-
-            
-            //byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
-
-            //---send the text---
-            //Debug.WriteLine("Sending : " + textToSend);
-            //nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-
-            ////---read back the text---
-            //byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-            //int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-            //Debug.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));            
-           // client.Close();
         }
 
         private void SendMessageExec()
         {
-            if(client != null)
-            {
-                if (client.Connected && nwStream.CanWrite)
-                {
-                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes("moin");
-
-                    nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-                }
-            }
-            //byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-            //int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-         //   client.Close();
+            Client.SendMessage();
         }
 
     }

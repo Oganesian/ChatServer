@@ -1,4 +1,4 @@
-﻿using ChatClient.Client;
+﻿using ChatClient.ClientConnection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +11,18 @@ namespace ChatServer
 {
     public class Server
     {
-        private const int PORT_NO = 8888;
+        private const int PORT = 8888;
         private const string SERVER_IP = "127.0.0.1";
 
-        List<Client> clients = new List<Client>();
-
-        TcpListener listener;
+        private List<Client> clients = new List<Client>();
+        private TcpListener listener;
 
         public void Listen()
         {
-            //---listen at the specified IP and port no.---
             IPAddress localAdd = IPAddress.Parse(SERVER_IP);
-            listener = new TcpListener(localAdd, PORT_NO);
+            listener = new TcpListener(localAdd, PORT);
             Console.WriteLine("Listening...");
             listener.Start();
-            //---incoming client connected---
-
 
             while (true)
             {
@@ -34,6 +30,7 @@ namespace ChatServer
 
                 var client = new Client(tcpClient);
                 AddConnection(client);
+                Console.WriteLine("A new client connected");
 
                 var newClientThread = new Thread(() => ListenToClient(client, tcpClient));
                 newClientThread.Start();
@@ -68,6 +65,8 @@ namespace ChatServer
                 catch
                 {
                     RemoveConnection(client.Id);
+                    Console.WriteLine("Client disconnected");
+                    break;
                 }
             }
         }
@@ -80,16 +79,22 @@ namespace ChatServer
 
         protected internal void RemoveConnection(string id)
         {
-            // получаем по id закрытое подключение
             Client client = clients.FirstOrDefault(c => c.Id == id);
-            // и удаляем его из списка подключений
+
             if (client != null)
                 clients.Remove(client);
         }
 
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            listener.Stop();
+
+            foreach (var client in clients)
+            {
+                client.Close();
+            }
+
+            Environment.Exit(0);
         }
     }
 }

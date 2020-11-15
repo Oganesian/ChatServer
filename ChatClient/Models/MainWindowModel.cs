@@ -1,4 +1,6 @@
-﻿using ChatClient.ViewModels;
+﻿using ChatClient.ClientConnection;
+using ChatClient.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace ChatClient.Models
 {
@@ -16,9 +18,19 @@ namespace ChatClient.Models
         }
         #endregion
 
-        private MainWindowModel() { }
+
         
-        public bool HamburgerMenuOpened { get; set; } // TODO: delete
+        public Client Client { get; set; }
+        public ObservableCollection<string> Friends { get; set; }
+
+        private MainWindowModel() 
+        {
+            Client = Client.GetInstance();
+            Friends = new ObservableCollection<string>();
+
+            Friends.Add("test");
+            Friends.Add("test2");
+        }
 
     }
 }
