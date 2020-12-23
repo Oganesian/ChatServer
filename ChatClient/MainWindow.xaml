@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient"
+        xmlns:views="clr-namespace:ChatClient.Views"
         mc:Ignorable="d"
         xmlns:vm="clr-namespace:ChatClient.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -21,20 +22,27 @@
     <Grid>
         <TabControl
   Style="{StaticResource MaterialDesignNavigatilRailTabControl}">
-            <TabItem Header="Test"
-    Style="{StaticResource MaterialDesignNavigationRailTabItem}">
-                <TextBlock
-      Padding="5"
-      TextWrapping="Wrap">
-      <Run
-        Text="tab 1 content. Default look and behaviors. " />
-      <LineBreak />
-      <LineBreak />
-      <Run
-        FontStyle="Italic">
-      Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-    </Run>
-                </TextBlock>
+            <TabItem Header="Test" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Messages}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Expander/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </TabItem>
             <TabItem
     Style="{StaticResource MaterialDesignNavigationRailTabItem}">

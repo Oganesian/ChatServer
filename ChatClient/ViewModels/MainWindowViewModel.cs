@@ -1,17 +1,21 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ChatClient.ClientConnection;
+using ChatClient.Data;
+using ChatClient.Factories;
 using ChatClient.Models;
+using ChatClient.Views;
 
 namespace ChatClient.ViewModels
 {
     class MainWindowViewModel : BindableBase
     {
-        private MainWindowModel model;
+        private readonly MainWindowModel model;
 
         #region Model reference types
         private Client _client;
         private ObservableCollection<string> _friends;
+        private ObservableCollection<IMessageUserControl> _messages;
         #endregion
 
         #region Model Properties
@@ -40,6 +44,19 @@ namespace ChatClient.ViewModels
                 SetProperty(ref _friends, value);
             }
         }
+
+        public ObservableCollection<IMessageUserControl> Messages
+        {
+            get
+            {
+                return model.Messages;
+            }
+            set
+            {
+                model.Messages = value;
+                SetProperty(ref _messages, value);
+            }
+        }
         #endregion
 
         #region Commands
@@ -50,6 +67,10 @@ namespace ChatClient.ViewModels
         public MainWindowViewModel()
         {
             model = MainWindowModel.GetInstance();
+
+            Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "hello world"));
+            Messages.Add(MessageUserControlFactory.Create(MessageType.OUTGOING, "hey mate"));
+            Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "what's up?"));
         }
 
         #region Commands Getters

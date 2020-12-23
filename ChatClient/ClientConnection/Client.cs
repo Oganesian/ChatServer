@@ -30,7 +30,7 @@ namespace ChatClient.ClientConnection
 
         #region Connection
         private NetworkStream stream;
-        private TcpClient client;
+        private TcpClient tcpClient;
         const int PORT_NO = 8888;
         const string SERVER_IP = "127.0.0.1";
         #endregion
@@ -43,8 +43,8 @@ namespace ChatClient.ClientConnection
         {
             try
             {
-                client = new TcpClient(SERVER_IP, PORT_NO);
-                stream = client.GetStream();
+                tcpClient = new TcpClient(SERVER_IP, PORT_NO);
+                stream = tcpClient.GetStream();
             }
             catch (Exception)
             {
@@ -72,9 +72,9 @@ namespace ChatClient.ClientConnection
 
         public void SendMessage()
         {
-            if (client != null)
+            if (tcpClient != null)
             {
-                if (client.Connected && stream.CanWrite)
+                if (tcpClient.Connected && stream.CanWrite)
                 {
                     byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes("moin");
 
@@ -91,8 +91,8 @@ namespace ChatClient.ClientConnection
             if (stream != null)
                 stream.Close();
 
-            if (client != null)
-                client.Close();
+            if (tcpClient != null)
+                tcpClient.Close();
         }
     }
 }
