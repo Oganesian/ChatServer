@@ -1,42 +1,46 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows;
 
 namespace ChatClient.ClientConnection
 {
+    [Serializable()]
     public class Client
     {
-        #region Singleton
-        private static Client instance;
-        public static Client GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new Client();
-            }
-            return instance;
-        }
+        //private static Client instance;
+        //public static Client GetInstance()
+        //{
+        //    if (instance == null)
+        //    {
+        //        instance = new Client();
+        //    }
+        //    return instance;
+        //}
 
-        private Client() 
+        public Client() // TODO: clean after debug
         {
+            Id = "1234";
+            Username = "Test";
             Connect();
         }
 
-        #endregion
-
+        
         public string Id { get; private set; }
         public string Username { get; private set; }
 
         #region Connection
-        private NetworkStream stream;
-        private TcpClient tcpClient;
-        const int PORT_NO = 8888;
-        const string SERVER_IP = "127.0.0.1";
+        [NonSerialized()] private NetworkStream stream;
+        [NonSerialized()] private TcpClient tcpClient;
+        [NonSerialized()] const int PORT_NO = 8888;
+        [NonSerialized()] const string SERVER_IP = "127.0.0.1";
         #endregion
 
         public Client(TcpClient tcpClient)
         {
+            this.tcpClient = tcpClient;
         }
 
         public void Connect()
@@ -46,9 +50,9 @@ namespace ChatClient.ClientConnection
                 tcpClient = new TcpClient(SERVER_IP, PORT_NO);
                 stream = tcpClient.GetStream();
             }
-            catch (Exception)
+            catch (Exception) // TODO: clean
             {
-                MessageBox.Show("Server is not available");
+                //MessageBox.Show("Server is not available");
             }
 
             //---data to send to the server---
@@ -66,7 +70,7 @@ namespace ChatClient.ClientConnection
             ////---read back the text---
             //byte[] bytesToRead = new byte[client.ReceiveBufferSize];
             //int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-            //Debug.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));            
+            //Debug.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
             // client.Close();
         }
 
@@ -76,9 +80,12 @@ namespace ChatClient.ClientConnection
             {
                 if (tcpClient.Connected && stream.CanWrite)
                 {
-                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes("moin");
+                    IFormatter formatter = new BinaryFormatter();
+                    //byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(Username);
 
-                    stream.Write(bytesToSend, 0, bytesToSend.Length);
+                    formatter.Serialize(stream, this);
+                    
+                    //stream.Write(bytesToSend, 0, bytesToSend.Length);
                 }
             }
             //byte[] bytesToRead = new byte[client.ReceiveBufferSize];

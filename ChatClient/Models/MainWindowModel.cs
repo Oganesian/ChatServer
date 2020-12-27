@@ -25,7 +25,8 @@ namespace ChatClient.Models
         public ObservableCollection<IMessageUserControl> Messages { get; set; }
         private MainWindowModel() 
         {
-            Client = Client.GetInstance();
+            Client = new Client();
+            Client.SendMessage();
             Friends = new ObservableCollection<string>();
             Messages = new ObservableCollection<IMessageUserControl>();
         }

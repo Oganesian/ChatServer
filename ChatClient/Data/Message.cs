@@ -10,6 +10,6 @@ namespace ChatClient.Data
         public MessageStatus Status { get; set; }
         public MessageType Type { get; set; }
 
-        private string MessageText;
+        public string EncryptedMessageString;
     }
 }

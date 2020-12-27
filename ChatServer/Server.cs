@@ -1,9 +1,12 @@
 ﻿using ChatClient.ClientConnection;
+using ChatClient.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 
@@ -14,7 +17,7 @@ namespace ChatServer
         private const int PORT = 8888;
         private const string SERVER_IP = "127.0.0.1";
 
-        private List<Client> clients = new List<Client>();
+        private List<Client> connectedClients = new List<Client>();
         private TcpListener listener;
 
         public void Listen()
@@ -29,8 +32,11 @@ namespace ChatServer
                 TcpClient tcpClient = listener.AcceptTcpClient();
 
                 var client = new Client(tcpClient);
+
+                
                 AddConnection(client);
                 Console.WriteLine("A new client connected");
+                Console.WriteLine("ClientInfos: {0}#{1}", client.Id, client.Username);
 
                 var newClientThread = new Thread(() => ListenToClient(client, tcpClient));
                 newClientThread.Start();
@@ -53,14 +59,14 @@ namespace ChatServer
             {
                 try
                 {
-                    byte[] buffer = new byte[tcpClient.ReceiveBufferSize];
+                    //byte[] buffer = new byte[tcpClient.ReceiveBufferSize];
 
-                    //---read incoming stream---
-                    int bytesRead = nwStream.Read(buffer, 0, tcpClient.ReceiveBufferSize);
+                    ////---read incoming stream---
+                    //int bytesRead = nwStream.Read(buffer, 0, tcpClient.ReceiveBufferSize);
 
-                    //---convert the data received into a string---
-                    string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine("Received : " + dataReceived);
+                    ////---convert the data received into a string---
+                    //string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    InterpretIncomingMessage(nwStream);
                 }
                 catch
                 {
@@ -71,25 +77,43 @@ namespace ChatServer
             }
         }
 
+        private void InterpretIncomingMessage(NetworkStream nwStream)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            object received = formatter.Deserialize(nwStream);
+
+            if (received is Client client)
+            {
+                Console.WriteLine("Received: {0}#{1}", client.Username, client.Id);
+            }
+            else if (received is Message message)
+            {
+                Console.WriteLine("Message: {0} to {1}, {2}, {3}", message.Sender.Username, message.Receiver.Username, message.Timestamp, message.EncryptedMessageString);
+            }
+            else
+            {
+                Console.WriteLine("Received: " + received);
+            }
+        }
 
         protected internal void AddConnection(Client clientObject)
         {
-            clients.Add(clientObject);
+            connectedClients.Add(clientObject);
         }
 
         protected internal void RemoveConnection(string id)
         {
-            Client client = clients.FirstOrDefault(c => c.Id == id);
+            Client client = connectedClients.FirstOrDefault(c => c.Id == id);
 
             if (client != null)
-                clients.Remove(client);
+                connectedClients.Remove(client);
         }
 
         public void Disconnect()
         {
             listener.Stop();
 
-            foreach (var client in clients)
+            foreach (var client in connectedClients)
             {
                 client.Close();
             }
