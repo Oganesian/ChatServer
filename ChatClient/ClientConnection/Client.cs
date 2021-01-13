@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ChatClient.Data;
+using ChatClient.Serialization;
+using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -20,22 +23,23 @@ namespace ChatClient.ClientConnection
         //    return instance;
         //}
 
-        public Client() // TODO: clean after debug
+        public Client() // TODO: clean up after debug
         {
-            Id = "1234";
+            Id = 1234;
             Username = "Test";
             Connect();
         }
 
-        
-        public string Id { get; private set; }
-        public string Username { get; private set; }
+        public int UniqueId { get; set; }
+        public int Id { get; set; } // TODO: private set?
+        public string Username { get; set; }
+        public List<Chat> Chats { get; set; }
 
         #region Connection
         [NonSerialized()] private NetworkStream stream;
-        [NonSerialized()] private TcpClient tcpClient;
-        [NonSerialized()] const int PORT_NO = 8888;
-        [NonSerialized()] const string SERVER_IP = "127.0.0.1";
+        [NonSerialized()] public TcpClient tcpClient;
+        [NonSerialized()] private const int PORT_NO = 8888;
+        [NonSerialized()] private const string SERVER_IP = "127.0.0.1";
         #endregion
 
         public Client(TcpClient tcpClient)
@@ -50,7 +54,7 @@ namespace ChatClient.ClientConnection
                 tcpClient = new TcpClient(SERVER_IP, PORT_NO);
                 stream = tcpClient.GetStream();
             }
-            catch (Exception) // TODO: clean
+            catch (Exception) // TODO: clean up
             {
                 //MessageBox.Show("Server is not available");
             }
@@ -74,16 +78,13 @@ namespace ChatClient.ClientConnection
             // client.Close();
         }
 
-        public void SendMessage()
+        public void SendMessage(object data)
         {
             if (tcpClient != null)
             {
                 if (tcpClient.Connected && stream.CanWrite)
                 {
-                    IFormatter formatter = new BinaryFormatter();
-                    //byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(Username);
-
-                    formatter.Serialize(stream, this);
+                    JsonSerializerProvider.SerializeBinary(stream, data); // Writes serialized binary data into the stream
                     
                     //stream.Write(bytesToSend, 0, bytesToSend.Length);
                 }

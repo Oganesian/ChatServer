@@ -7,12 +7,11 @@ namespace ChatClient.Factories
 {
     public class MessageUserControlFactory
     {
-        public static IMessageUserControl Create(MessageType type, string text)
+        public static IMessageUserControl Create(Message msg)
         {
-            string timestamp = DateTime.Now.ToString("HH:mm");
-            UserControlMessageViewModel dataContext = new UserControlMessageViewModel(text, timestamp);
+            UserControlMessageViewModel dataContext = new UserControlMessageViewModel(msg.EncryptedMessageString, msg.Timestamp);
 
-            return type switch
+            return msg.Type switch
             {
                 MessageType.INCOMING => new UserControlMessageReceived { DataContext = dataContext },
                 MessageType.OUTGOING => new UserControlMessageSent { DataContext = dataContext },

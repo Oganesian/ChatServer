@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient"
-        xmlns:views="clr-namespace:ChatClient.Views"
         mc:Ignorable="d"
         xmlns:vm="clr-namespace:ChatClient.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -21,48 +20,8 @@
     </Window.DataContext>
     <Grid>
         <TabControl
-  Style="{StaticResource MaterialDesignNavigatilRailTabControl}">
-            <TabItem
-    Style="{StaticResource MaterialDesignNavigationRailTabItem}" HorizontalAlignment="Left" Width="150" MaxWidth="220" Height="50" VerticalAlignment="Top">
-                <TabItem.Header>
-                    <materialDesign:PackIcon
-        Kind="Plus"
-        Width="24"
-        Height="24" />
-                </TabItem.Header>
-            </TabItem>
-            <TabItem Header="Usernaddddddddddme#1234" ToolTip="Usernaddddddddddme#1234" Style="{StaticResource MaterialDesignNavigationRailTabItem}" HorizontalAlignment="Left" Width="150" MaxWidth="220" Height="50" Margin="0" VerticalAlignment="Top">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto" MaxHeight="170"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0">
-                        <ItemsControl ItemsSource="{Binding Messages}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ItemsControl ItemsSource="{Binding}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Expander/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                    <ContentControl Grid.Row="1" MaxHeight="270">
-                        <views:SendMessageBoxAndButtons></views:SendMessageBoxAndButtons>
-                    </ContentControl>
-                </Grid>
-            </TabItem>
-        </TabControl>
+  Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+            ItemsSource="{Binding Friends}"/>
         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" MaxWidth="220" Height="35" TextAlignment="Center" Text="{Binding FullUsername}"/>
     </Grid>
 </Window>

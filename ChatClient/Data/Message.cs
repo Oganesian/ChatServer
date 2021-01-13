@@ -1,12 +1,15 @@
 ﻿using ChatClient.ClientConnection;
+using System;
 
 namespace ChatClient.Data
 {
+    [Serializable()]
     public class Message
     {
-        public double Timestamp { get; private set; }
-        public Client Sender { get; private set; }
-        public Client Receiver { get; private set; }
+        public DateTime Timestamp { get; set; }
+        //public Client Sender { get; set; }
+        //public Client Receiver { get; set; }
+        public int ReceiverUniqueId { get; set; }
         public MessageStatus Status { get; set; }
         public MessageType Type { get; set; }
 

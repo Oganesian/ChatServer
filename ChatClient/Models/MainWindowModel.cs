@@ -1,12 +1,10 @@
 ﻿using ChatClient.ClientConnection;
-using ChatClient.Data;
-using ChatClient.ViewModels;
 using ChatClient.Views;
 using System.Collections.ObjectModel;
 
 namespace ChatClient.Models
 {
-    class MainWindowModel
+    public class MainWindowModel
     {
         #region Singleton
         private static MainWindowModel instance;
@@ -21,15 +19,11 @@ namespace ChatClient.Models
         #endregion
 
         public Client Client { get; set; }
-        public ObservableCollection<string> Friends { get; set; }
-        public ObservableCollection<IMessageUserControl> Messages { get; set; }
+        public ObservableCollection<MyTabItem> Friends { get; set; }
         private MainWindowModel() 
         {
             Client = new Client();
-            Client.SendMessage();
-            Friends = new ObservableCollection<string>();
-            Messages = new ObservableCollection<IMessageUserControl>();
+            Friends = new ObservableCollection<MyTabItem>();
         }
-
     }
 }

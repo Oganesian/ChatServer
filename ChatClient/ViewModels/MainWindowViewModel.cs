@@ -1,10 +1,13 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using ChatClient.ClientConnection;
+﻿using ChatClient.ClientConnection;
 using ChatClient.Data;
 using ChatClient.Factories;
 using ChatClient.Models;
+using ChatClient.Serialization;
 using ChatClient.Views;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace ChatClient.ViewModels
 {
@@ -14,8 +17,8 @@ namespace ChatClient.ViewModels
 
         #region Model reference types
         private Client _client;
-        private ObservableCollection<string> _friends;
-        private ObservableCollection<IMessageUserControl> _messages;
+        
+        private ObservableCollection<MyTabItem> _friends;
         #endregion
 
         #region Model Properties
@@ -32,7 +35,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ObservableCollection<string> Friends
+        public ObservableCollection<MyTabItem> Friends
         {
             get
             {
@@ -44,34 +47,40 @@ namespace ChatClient.ViewModels
                 SetProperty(ref _friends, value);
             }
         }
-
-        public ObservableCollection<IMessageUserControl> Messages
-        {
-            get
-            {
-                return model.Messages;
-            }
-            set
-            {
-                model.Messages = value;
-                SetProperty(ref _messages, value);
-            }
-        }
         #endregion
 
         #region Commands
         private ICommand _connectToServer;
-        private ICommand _sendMessage;
         #endregion
 
         public MainWindowViewModel()
         {
             model = MainWindowModel.GetInstance();
+            //Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "hello world"));
+            //Messages.Add(MessageUserControlFactory.Create(MessageType.OUTGOING, "hey mate"));
+            //Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "what's up?"));
 
-            Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "hello world"));
-            Messages.Add(MessageUserControlFactory.Create(MessageType.OUTGOING, "hey mate"));
-            Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "what's up?"));
+            if (Client != null)
+            {
+                Client.Chats = LoadClientChats();
+                //JsonSerializerProvider.SerializeClient(Client);
+                DisplayChats();
+            }
         }
+
+        private void DisplayChats()
+        {
+            foreach (var chat in Client.Chats)
+            {
+                Friends.Add(MyTabItemFactory.Create(chat));
+            }
+        }
+
+        private List<Chat> LoadClientChats()
+        {
+            return JsonSerializerProvider.DeserializeClientChats(Client);
+        }
+
 
         #region Commands Getters
         public ICommand ConnectToServer
@@ -85,30 +94,11 @@ namespace ChatClient.ViewModels
                 return _connectToServer;
             }
         }
-
-        public ICommand SendMessage
-        {
-            get
-            {
-                if (_sendMessage == null)
-                {
-                    _sendMessage = new CommandHandler(() => SendMessageExec(), () => CanExecute);
-                }
-                return _sendMessage;
-            }
-        }
-        
         #endregion
 
         private void ConectToServerExec()
         {
 
         }
-
-        private void SendMessageExec()
-        {
-            Client.SendMessage();
-        }
-
     }
 }

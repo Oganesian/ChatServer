@@ -1,5 +1,6 @@
 ﻿using ChatClient.ClientConnection;
 using ChatClient.Data;
+using ChatClient.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 
 namespace ChatServer
@@ -32,13 +32,12 @@ namespace ChatServer
                 TcpClient tcpClient = listener.AcceptTcpClient();
 
                 var client = new Client(tcpClient);
-
                 
                 AddConnection(client);
                 Console.WriteLine("A new client connected");
-                Console.WriteLine("ClientInfos: {0}#{1}", client.Id, client.Username);
+                //Console.WriteLine("ClientInfos: {0}#{1}", client.Username, client.Id);
 
-                var newClientThread = new Thread(() => ListenToClient(client, tcpClient));
+                var newClientThread = new Thread(() => ListenToClient(client));
                 newClientThread.Start();
 
                 //---get the incoming data through a network stream---
@@ -51,9 +50,9 @@ namespace ChatServer
             }
         }
 
-        private void ListenToClient(Client client, TcpClient tcpClient)
+        private void ListenToClient(Client client)
         {
-            NetworkStream nwStream = tcpClient.GetStream();
+            NetworkStream nwStream = client.tcpClient.GetStream();
 
             while (true)
             {
@@ -70,7 +69,7 @@ namespace ChatServer
                 }
                 catch
                 {
-                    RemoveConnection(client.Id);
+                    RemoveConnection(client.UniqueId);
                     Console.WriteLine("Client disconnected");
                     break;
                 }
@@ -79,8 +78,7 @@ namespace ChatServer
 
         private void InterpretIncomingMessage(NetworkStream nwStream)
         {
-            IFormatter formatter = new BinaryFormatter();
-            object received = formatter.Deserialize(nwStream);
+            object received = JsonSerializerProvider.DeserializeBinary(nwStream);
 
             if (received is Client client)
             {
@@ -88,7 +86,7 @@ namespace ChatServer
             }
             else if (received is Message message)
             {
-                Console.WriteLine("Message: {0} to {1}, {2}, {3}", message.Sender.Username, message.Receiver.Username, message.Timestamp, message.EncryptedMessageString);
+                Console.WriteLine("Message: to {0}, {1}, {2}", message.ReceiverUniqueId, message.Timestamp, message.EncryptedMessageString);
             }
             else
             {
@@ -101,7 +99,7 @@ namespace ChatServer
             connectedClients.Add(clientObject);
         }
 
-        protected internal void RemoveConnection(string id)
+        protected internal void RemoveConnection(int id)
         {
             Client client = connectedClients.FirstOrDefault(c => c.Id == id);
 

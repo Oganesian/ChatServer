@@ -1,4 +1,5 @@
 ﻿using ChatClient.Models;
+using System;
 
 namespace ChatClient.ViewModels
 {
@@ -9,11 +10,11 @@ namespace ChatClient.ViewModels
         private string _text;
         private string _timestamp;
 
-        public UserControlMessageViewModel(string text, string timestamp)
+        public UserControlMessageViewModel(string text, DateTime timestamp)
         {
             model = new UserControlMessageModel();
             Text = text;
-            Timestamp = timestamp;
+            Timestamp = timestamp.ToString("t");
         }
 
         public string Text
