@@ -3,7 +3,7 @@
 namespace ChatClient.Views
 {
     /// <summary>
-    /// Interaction logic for UserControlMessageSent.xaml
+    /// Interaction logic for UserControlMessageReceived.xaml
     /// </summary>
     public partial class UserControlMessageSent : UserControl, IMessageUserControl
     {

@@ -2,13 +2,14 @@
 using ChatClient.Data;
 using ChatClient.Models;
 using System;
+using System.Linq;
 using System.Windows.Input;
 
 namespace ChatClient.ViewModels
 {
     public class SendMessageBoxAndButtonsViewModel : BindableBase
     {
-        private SendMessageBoxAndButtonsModel model;
+        private readonly SendMessageBoxAndButtonsModel model;
 
         //private Client receiver;
         private Client sender;
@@ -56,12 +57,19 @@ namespace ChatClient.ViewModels
                 sender = new Client(); // TODO: Remove this
                 var message = new Message()
                 {
+                    ReceiverUniqueId = 0,
                     Timestamp = DateTime.Now,
-                    EncryptedMessageString = TextMessage
+                    EncryptedMessageString = TextMessage,
+                    Type = MessageType.OUTGOING,
+                    Status = MessageStatus.SENDED
                 };
 
                 sender.SendMessage(message);
                 TextMessage = string.Empty;
+
+                // if(sender.SendMessage(message)) { ...
+                var targetChat = MainWindowViewModel.GetInstance().Chats.Where(x=> x.UniqueId == message.ReceiverUniqueId);
+                targetChat.ElementAt(0).ViewModel.Messages.Add(Factories.MessageUserControlFactory.Create(message));
             }
         }
     }

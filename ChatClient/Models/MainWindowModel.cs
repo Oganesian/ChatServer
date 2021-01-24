@@ -1,4 +1,5 @@
-﻿using ChatClient.ClientConnection;
+﻿using ChatClient.AuxiliaryClasses;
+using ChatClient.ClientConnection;
 using ChatClient.Views;
 using System.Collections.ObjectModel;
 
@@ -19,11 +20,14 @@ namespace ChatClient.Models
         #endregion
 
         public Client Client { get; set; }
-        public ObservableCollection<MyTabItem> Friends { get; set; }
+        //public ObservableCollection<MyTabItemContainer> Chats { get; set; }
+        public ObservableCollection<MyTabItem> ChatsToDisplay { get; set; }
+        public string FullUsername { get; set; }
+
         private MainWindowModel() 
         {
-            Client = new Client();
-            Friends = new ObservableCollection<MyTabItem>();
+            Client = new Client(); // TODO: Remove
+            ChatsToDisplay = new ObservableCollection<MyTabItem>();
         }
     }
 }

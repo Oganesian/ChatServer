@@ -1,24 +1,37 @@
-﻿using ChatClient.ClientConnection;
+﻿using ChatClient.AuxiliaryClasses;
+using ChatClient.ClientConnection;
 using ChatClient.Data;
 using ChatClient.Factories;
 using ChatClient.Models;
 using ChatClient.Serialization;
 using ChatClient.Views;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace ChatClient.ViewModels
 {
-    class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase
     {
+        #region Singleton
+        private static MainWindowViewModel instance;
+        public static MainWindowViewModel GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new MainWindowViewModel();
+            }
+            return instance;
+        }
+        #endregion
+
         private readonly MainWindowModel model;
 
         #region Model reference types
         private Client _client;
-        
-        private ObservableCollection<MyTabItem> _friends;
+        private string _fullUsername;
+        private List<MyTabItemContainer> _chats;
+        private ObservableCollection<MyTabItem> _chatsToDisplay;
         #endregion
 
         #region Model Properties
@@ -34,17 +47,42 @@ namespace ChatClient.ViewModels
                 SetProperty(ref _client, value);
             }
         }
+        public string FullUsername
 
-        public ObservableCollection<MyTabItem> Friends
         {
             get
             {
-                return model.Friends;
+                return model.FullUsername;
             }
             set
             {
-                model.Friends = value;
-                SetProperty(ref _friends, value);
+                model.FullUsername = value;
+                SetProperty(ref _fullUsername, value);
+            }
+        }
+
+        public List<MyTabItemContainer> Chats
+        {
+            get
+            {
+                return _chats;
+            }
+            set
+            {
+                SetProperty(ref _chats, value);
+            }
+        }
+
+        public ObservableCollection<MyTabItem> ChatsToDisplay
+        {
+            get
+            {
+                return model.ChatsToDisplay;
+            }
+            set
+            {
+                model.ChatsToDisplay = value;
+                SetProperty(ref _chatsToDisplay, value);
             }
         }
         #endregion
@@ -53,17 +91,14 @@ namespace ChatClient.ViewModels
         private ICommand _connectToServer;
         #endregion
 
-        public MainWindowViewModel()
+        public MainWindowViewModel() // TODO: set as private
         {
             model = MainWindowModel.GetInstance();
-            //Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "hello world"));
-            //Messages.Add(MessageUserControlFactory.Create(MessageType.OUTGOING, "hey mate"));
-            //Messages.Add(MessageUserControlFactory.Create(MessageType.INCOMING, "what's up?"));
 
+            Chats = new List<MyTabItemContainer>();
             if (Client != null)
             {
                 Client.Chats = LoadClientChats();
-                //JsonSerializerProvider.SerializeClient(Client);
                 DisplayChats();
             }
         }
@@ -72,7 +107,8 @@ namespace ChatClient.ViewModels
         {
             foreach (var chat in Client.Chats)
             {
-                Friends.Add(MyTabItemFactory.Create(chat));
+                Chats.Add(MyTabItemContainerFactory.Create(chat));
+                ChatsToDisplay.Add(Chats[^1].MyTabItem); // TODO: Check if it works
             }
         }
 

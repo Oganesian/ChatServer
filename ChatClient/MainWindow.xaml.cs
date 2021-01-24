@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ChatClient.ViewModels;
+using System.Windows;
 
 namespace ChatClient
 {

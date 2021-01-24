@@ -13,9 +13,9 @@ namespace ChatClient.Factories
 
             return msg.Type switch
             {
-                MessageType.INCOMING => new UserControlMessageReceived { DataContext = dataContext },
                 MessageType.OUTGOING => new UserControlMessageSent { DataContext = dataContext },
-                _ => new UserControlMessageSent(),
+                MessageType.INCOMING => new UserControlMessageReceived { DataContext = dataContext },
+                _ => new UserControlMessageReceived(),
             };
         }
     }
