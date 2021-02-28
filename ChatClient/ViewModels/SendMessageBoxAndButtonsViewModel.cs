@@ -55,9 +55,9 @@ namespace ChatClient.ViewModels
             if (!string.IsNullOrEmpty(TextMessage))
             {
                 sender = new Client(); // TODO: Remove this
-                var message = new Message()
+                var message = new Message() // TODO: WTF
                 {
-                    ReceiverUniqueId = 0,
+                    ReceiverUniqueId = 1,
                     Timestamp = DateTime.Now,
                     EncryptedMessageString = TextMessage,
                     Type = MessageType.OUTGOING,
@@ -68,8 +68,10 @@ namespace ChatClient.ViewModels
                 TextMessage = string.Empty;
 
                 // if(sender.SendMessage(message)) { ...
-                var targetChat = MainWindowViewModel.GetInstance().Chats.Where(x=> x.UniqueId == message.ReceiverUniqueId);
-                targetChat.ElementAt(0).ViewModel.Messages.Add(Factories.MessageUserControlFactory.Create(message));
+                //var targetChat = MainWindowViewModel.GetInstance().Chats.Where(x => x.UniqueId == message.ReceiverUniqueId);
+                var targetChat = MainWindowViewModel.GetInstance().Chats.Find(x => x.UniqueId == message.ReceiverUniqueId);
+                targetChat.ViewModel.AddMessage(message);
+                //targetChat.ViewModel.Messages.Add(Factories.MessageUserControlFactory.Create(message));
             }
         }
     }

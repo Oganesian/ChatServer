@@ -91,7 +91,7 @@ namespace ChatClient.ViewModels
         private ICommand _connectToServer;
         #endregion
 
-        public MainWindowViewModel() // TODO: set as private
+        private MainWindowViewModel() // TODO: set as private
         {
             model = MainWindowModel.GetInstance();
 
@@ -115,6 +115,15 @@ namespace ChatClient.ViewModels
         private List<Chat> LoadClientChats()
         {
             return JsonSerializerProvider.DeserializeClientChats(Client);
+        }
+
+        public void SaveClientChat(int receiverUniqueId)
+        {
+            var chat = Client.Chats.Find(x => x.receiverUniqueId == receiverUniqueId);
+            if(chat != null)
+            {
+                JsonSerializerProvider.SerializeChat(Client, chat);
+            }
         }
 
 

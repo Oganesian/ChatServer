@@ -11,6 +11,7 @@ namespace ChatClient
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = MainWindowViewModel.GetInstance();
         }
     }
 }

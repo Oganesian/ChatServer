@@ -15,11 +15,14 @@ namespace ChatClient.ViewModels
         private ObservableCollection<IMessageUserControl> _messages;
         private string _username;
 
+        private Chat _chat;
+
         public MyTabItemViewModel(Chat chat)
         {
             model = new MyTabItemModel();
-            DisplayChatMessages(chat);
-            Username = "Username#" + chat.uniqueId; // TODO: remove
+            Username = "Username#" + chat.receiverId; // TODO: remove
+            _chat = chat;
+            DisplayChatMessages();
         }
 
         public ObservableCollection<IMessageUserControl> Messages
@@ -48,12 +51,19 @@ namespace ChatClient.ViewModels
             }
         }
 
-        private void DisplayChatMessages(Chat chat)
+        private void DisplayChatMessages()
         {
-            foreach (var message in chat.messages)
+            foreach (var message in _chat.messages)
             {
                 Messages.Add(MessageUserControlFactory.Create(message));
             }
+        }
+
+        public void AddMessage(Message msg)
+        {
+            Messages.Add(MessageUserControlFactory.Create(msg));
+            _chat.messages.Add(msg);
+            MainWindowViewModel.GetInstance().SaveClientChat(_chat.receiverUniqueId);
         }
     }
 }

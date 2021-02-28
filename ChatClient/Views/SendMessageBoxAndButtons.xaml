@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:ChatClient.Views"
              xmlns:vm="clr-namespace:ChatClient.ViewModels"
              mc:Ignorable="d" 
-                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:auxiliaryclasses="clr-namespace:ChatClient.AuxiliaryClasses"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
@@ -37,7 +38,11 @@
             </Button.Content>
         </Button>
         <Border Grid.Column="1" MinWidth="100" MinHeight="45" Margin="0, 10" CornerRadius="13" Background="#454545">
-            <TextBox Text="{Binding TextMessage}" MaxLength="1600" Padding="6 7 6 6" VerticalAlignment="Center" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Write a message" MinHeight="50" MaxHeight="140" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0"/>
+            <TextBox Text="{Binding TextMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="1600" Padding="6 7 6 6" VerticalAlignment="Center" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Write a message" MinHeight="50" MaxHeight="140" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding SendMessage}" Key="Enter" />
+                </TextBox.InputBindings>
+            </TextBox>
         </Border>
         <Button Command="{Binding SendMessage}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="3" Width="50" Padding="0">
             <Button.Content>

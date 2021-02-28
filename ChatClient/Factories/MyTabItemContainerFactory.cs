@@ -11,7 +11,7 @@ namespace ChatClient.Factories
         {
             return new MyTabItemContainer 
             { 
-                UniqueId = chat.uniqueId, MyTabItem = new MyTabItem { DataContext = new MyTabItemViewModel(chat) }
+                UniqueId = chat.receiverUniqueId, MyTabItem = new MyTabItem { DataContext = new MyTabItemViewModel(chat) }
             };
         }
     }

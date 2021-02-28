@@ -15,9 +15,9 @@
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Chat" Height="450" Width="800" MinWidth="420" MinHeight="240">
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:MainWindowViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <Grid>
         <TabControl
   Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
