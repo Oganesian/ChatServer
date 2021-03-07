@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 
 namespace ChatServer
@@ -31,14 +29,26 @@ namespace ChatServer
             {
                 TcpClient tcpClient = listener.AcceptTcpClient();
 
-                var client = new Client(tcpClient);
-                
-                AddConnection(client);
-                Console.WriteLine("A new client connected");
-                //Console.WriteLine("ClientInfos: {0}#{1}", client.Username, client.Id);
+                // var client = new Client(tcpClient);
 
-                var newClientThread = new Thread(() => ListenToClient(client));
-                newClientThread.Start();
+                NetworkStream nwStream = tcpClient.GetStream();
+                object received = JsonSerializerProvider.DeserializeBinary(nwStream);
+
+                if (received is Client client)
+                {
+                    Console.WriteLine("A new client connected");
+                    Console.WriteLine("Received: {0}#{1}", client.Username, client.Id);
+                    //connectedClients.RemoveAll(x => x.tcpClient == client.tcpClient);
+                    client.tcpClient = tcpClient;
+                    AddConnection(client);
+                    new Thread(() => ListenToClient(client)).Start();
+                }
+
+                //AddConnection(client);
+                //Console.WriteLine("A new client connected");
+
+
+                //                newClientThread.Start();
 
                 //---get the incoming data through a network stream---
                 //---write back the text to the client---
@@ -80,13 +90,29 @@ namespace ChatServer
         {
             object received = JsonSerializerProvider.DeserializeBinary(nwStream);
 
-            if (received is Client client)
-            {
-                Console.WriteLine("Received: {0}#{1}", client.Username, client.Id);
-            }
-            else if (received is Message message)
+            //if (received is Client client)
+            //{
+            //    Console.WriteLine("Received: {0}#{1}", client.Username, client.Id);
+            //    connectedClients.RemoveAll(x => x.tcpClient == client.tcpClient);
+            //    AddConnection(client);
+            //}
+            /*else */
+            if (received is Message message)
             {
                 Console.WriteLine("Message: to {0}, {1}, {2}", message.ReceiverUniqueId, message.Timestamp, message.EncryptedMessageString);
+                try
+                {
+                    var receiver = connectedClients.FirstOrDefault(x => x.UniqueId == message.ReceiverUniqueId);
+                    if (receiver != null)
+                    {
+                        var receiverNwStream = receiver.tcpClient.GetStream();
+                        JsonSerializerProvider.SerializeBinary(receiverNwStream, message); // Writes serialized binary data into the stream
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Exception:" + e.Message);
+                }
             }
             else
             {

@@ -2,10 +2,7 @@
 using ChatClient.Factories;
 using ChatClient.Models;
 using ChatClient.Views;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace ChatClient.ViewModels
 {
@@ -20,9 +17,14 @@ namespace ChatClient.ViewModels
         public MyTabItemViewModel(Chat chat)
         {
             model = new MyTabItemModel();
-            Username = "Username#" + chat.receiverId; // TODO: remove
+            Username = chat.receiverUsername + "#" + chat.receiverId;
             _chat = chat;
             DisplayChatMessages();
+        }
+
+        public int GetReceiverUniqueId()
+        {
+            return _chat.receiverUniqueId;
         }
 
         public ObservableCollection<IMessageUserControl> Messages

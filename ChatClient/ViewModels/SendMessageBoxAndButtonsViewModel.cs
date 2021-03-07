@@ -2,7 +2,6 @@
 using ChatClient.Data;
 using ChatClient.Models;
 using System;
-using System.Linq;
 using System.Windows.Input;
 
 namespace ChatClient.ViewModels
@@ -10,12 +9,8 @@ namespace ChatClient.ViewModels
     public class SendMessageBoxAndButtonsViewModel : BindableBase
     {
         private readonly SendMessageBoxAndButtonsModel model;
-
-        //private Client receiver;
         private Client sender;
-
         private ICommand _sendMessage;
-
         private string _textMessage;
 
         public SendMessageBoxAndButtonsViewModel()
@@ -54,10 +49,15 @@ namespace ChatClient.ViewModels
         {
             if (!string.IsNullOrEmpty(TextMessage))
             {
-                sender = new Client(); // TODO: Remove this
-                var message = new Message() // TODO: WTF
+                //sender = new Client(); // TODO: Remove this
+                var mwvm = MainWindowViewModel.GetInstance();
+                sender = mwvm.Client;
+                var targetChat = mwvm.CurrentChat.DataContext as MyTabItemViewModel;
+
+                var message = new Message()
                 {
-                    ReceiverUniqueId = 1,
+                    SenderUniqueId = sender.UniqueId,
+                    ReceiverUniqueId = targetChat.GetReceiverUniqueId(),
                     Timestamp = DateTime.Now,
                     EncryptedMessageString = TextMessage,
                     Type = MessageType.OUTGOING,
@@ -67,10 +67,11 @@ namespace ChatClient.ViewModels
                 sender.SendMessage(message);
                 TextMessage = string.Empty;
 
+                targetChat.AddMessage(message);
+
                 // if(sender.SendMessage(message)) { ...
-                //var targetChat = MainWindowViewModel.GetInstance().Chats.Where(x => x.UniqueId == message.ReceiverUniqueId);
-                var targetChat = MainWindowViewModel.GetInstance().Chats.Find(x => x.UniqueId == message.ReceiverUniqueId);
-                targetChat.ViewModel.AddMessage(message);
+                
+                // var targetChat = MainWindowViewModel.GetInstance().Chats.Find(x => x.UniqueId == message.ReceiverUniqueId);
                 //targetChat.ViewModel.Messages.Add(Factories.MessageUserControlFactory.Create(message));
             }
         }

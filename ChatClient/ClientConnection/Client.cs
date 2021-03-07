@@ -3,9 +3,8 @@ using ChatClient.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ChatClient.ClientConnection
@@ -26,7 +25,8 @@ namespace ChatClient.ClientConnection
         public Client() // TODO: clean up after debug
         {
             Id = 1234;
-            Username = "Test";
+            Username = "Bob";
+            UniqueId = 1;
             Connect();
         }
 
@@ -34,6 +34,9 @@ namespace ChatClient.ClientConnection
         public int Id { get; set; } // TODO: private set?
         public string Username { get; set; }
         public List<Chat> Chats { get; set; }
+        public Func<Message, Task> MessageReceived { get; internal set; }
+
+        //public Task MessageReceived { get; internal set; }
 
         #region Connection
         [NonSerialized()] private NetworkStream stream;
@@ -42,21 +45,18 @@ namespace ChatClient.ClientConnection
         [NonSerialized()] private const string SERVER_IP = "127.0.0.1";
         #endregion
 
-        public Client(TcpClient tcpClient)
-        {
-            this.tcpClient = tcpClient;
-        }
-
         public void Connect()
         {
             try
             {
                 tcpClient = new TcpClient(SERVER_IP, PORT_NO);
                 stream = tcpClient.GetStream();
+                JsonSerializerProvider.SerializeBinary(stream, this);
+                new Thread(() => ListenToServer()).Start();
             }
-            catch (Exception) // TODO: clean up
+            catch (Exception e) // TODO: clean up
             {
-                //MessageBox.Show("Server is not available");
+                MessageBox.Show("Server is not available: " + e.Message);
             }
 
             //---data to send to the server---
@@ -76,6 +76,36 @@ namespace ChatClient.ClientConnection
             //int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
             //Debug.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
             // client.Close();
+        }
+
+        private void ListenToServer()
+        {
+            NetworkStream nwStream = tcpClient.GetStream();
+
+            while (true)
+            {
+                try
+                {
+                    object received = JsonSerializerProvider.DeserializeBinary(nwStream);
+
+                    if (received is Message message)
+                    {
+                        try
+                        {
+                            MessageReceived.Invoke(message);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Exception:" + e.Message);
+                        }
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Server is not available");
+                    break;
+                }
+            }
         }
 
         public void SendMessage(object data)

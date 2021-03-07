@@ -22,6 +22,8 @@ namespace ChatClient.Models
         public Client Client { get; set; }
         //public ObservableCollection<MyTabItemContainer> Chats { get; set; }
         public ObservableCollection<MyTabItem> ChatsToDisplay { get; set; }
+        public MyTabItem CurrentChat { get; set; } = null;
+
         public string FullUsername { get; set; }
 
         private MainWindowModel() 

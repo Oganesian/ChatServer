@@ -5,9 +5,13 @@ using ChatClient.Factories;
 using ChatClient.Models;
 using ChatClient.Serialization;
 using ChatClient.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ChatClient.ViewModels
 {
@@ -32,6 +36,7 @@ namespace ChatClient.ViewModels
         private string _fullUsername;
         private List<MyTabItemContainer> _chats;
         private ObservableCollection<MyTabItem> _chatsToDisplay;
+        private MyTabItem _currentChat;
         #endregion
 
         #region Model Properties
@@ -85,19 +90,34 @@ namespace ChatClient.ViewModels
                 SetProperty(ref _chatsToDisplay, value);
             }
         }
+
+        public MyTabItem CurrentChat
+        {
+            get
+            {
+                return model.CurrentChat;
+            }
+            set
+            {
+                model.CurrentChat = value;
+                SetProperty(ref _currentChat, value);
+            }
+        }
         #endregion
 
         #region Commands
         private ICommand _connectToServer;
         #endregion
 
-        private MainWindowViewModel() // TODO: set as private
+        private MainWindowViewModel()
         {
             model = MainWindowModel.GetInstance();
 
             Chats = new List<MyTabItemContainer>();
+
             if (Client != null)
             {
+                Client.MessageReceived = ReceiveMessageAsync;
                 Client.Chats = LoadClientChats();
                 DisplayChats();
             }
@@ -109,7 +129,30 @@ namespace ChatClient.ViewModels
             {
                 Chats.Add(MyTabItemContainerFactory.Create(chat));
                 ChatsToDisplay.Add(Chats[^1].MyTabItem); // TODO: Check if it works
+                //ChatsToDisplay.Add(MyTabItemContainerFactory.Create(chat).MyTabItem);
             }
+        }
+
+        private async Task ReceiveMessageAsync(Message message)
+        {
+            try
+            {
+                var targetChat = Chats.Find(x => x.UniqueId == message.SenderUniqueId);
+                message.Type = MessageType.INCOMING;
+                //targetChat.ViewModel.AddMessage(message);
+                //await Task.Run(() => targetChat.ViewModel.AddMessage(message));
+                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                    new Action(() => targetChat.ViewModel.AddMessage(message)));
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        void AddReceivedMessageToTargetChat(MyTabItemContainer targetChat, Message message)
+        {
+            targetChat.ViewModel.AddMessage(message);
         }
 
         private List<Chat> LoadClientChats()
