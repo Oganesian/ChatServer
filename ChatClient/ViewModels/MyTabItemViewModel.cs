@@ -65,7 +65,7 @@ namespace ChatClient.ViewModels
         {
             Messages.Add(MessageUserControlFactory.Create(msg));
             _chat.messages.Add(msg);
-            MainWindowViewModel.GetInstance().SaveClientChat(_chat.receiverUniqueId);
+            MainWindowViewModel.GetInstance().SaveAccountChat(_chat.receiverUniqueId);
         }
     }
 }

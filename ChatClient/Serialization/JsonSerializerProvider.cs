@@ -1,5 +1,4 @@
-﻿using ChatClient.ClientConnection;
-using ChatClient.Data;
+﻿using ChatClient.Data;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -23,9 +22,9 @@ namespace ChatClient.Serialization
         //    File.WriteAllText(fullPath, jsonString);
         //}
 
-        public static void SerializeChat(Client client, Chat chat)
+        public static void SerializeChat(string username, int id, Chat chat)
         {
-            string fullPath = CHATS_DIR + client.Username + client.Id + "/";
+            string fullPath = CHATS_DIR + username + id + "/";
             string jsonString = JsonConvert.SerializeObject(chat, Formatting.Indented);
 
             if (!Directory.Exists(fullPath))
@@ -34,10 +33,10 @@ namespace ChatClient.Serialization
             File.WriteAllText(fullPath + chat.receiverUsername + chat.receiverId + chat.receiverUniqueId, jsonString);
         }
 
-        public static List<Chat> DeserializeClientChats(Client client)
+        public static List<Chat> DeserializeChats(string username, int id)
         {
             List<Chat> chats = new List<Chat>();
-            string fullPath = CHATS_DIR + client.Username + client.Id + "/";
+            string fullPath = CHATS_DIR + username + id + "/";
             foreach (var file in Directory.GetFiles(fullPath))
             {
                 string jsonString = File.ReadAllText(file);

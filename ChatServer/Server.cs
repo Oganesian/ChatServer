@@ -15,7 +15,7 @@ namespace ChatServer
         private const int PORT = 8888;
         private const string SERVER_IP = "127.0.0.1";
 
-        private List<Client> connectedClients = new List<Client>();
+        private List<Account> connectedAccounts = new List<Account>();
         private TcpListener listener;
 
         public void Listen()
@@ -34,52 +34,31 @@ namespace ChatServer
                 NetworkStream nwStream = tcpClient.GetStream();
                 object received = JsonSerializerProvider.DeserializeBinary(nwStream);
 
-                if (received is Client client)
+                if (received is Account account)
                 {
                     Console.WriteLine("A new client connected");
-                    Console.WriteLine("Received: {0}#{1}", client.Username, client.Id);
+                    Console.WriteLine("Received: {0}#{1}", account.Username, account.PublicId);
                     //connectedClients.RemoveAll(x => x.tcpClient == client.tcpClient);
-                    client.tcpClient = tcpClient;
-                    AddConnection(client);
-                    new Thread(() => ListenToClient(client)).Start();
+                    account.Client.tcpClient = tcpClient;
+                    AddConnection(account);
+                    new Thread(() => ListenToClient(account)).Start();
                 }
-
-                //AddConnection(client);
-                //Console.WriteLine("A new client connected");
-
-
-                //                newClientThread.Start();
-
-                //---get the incoming data through a network stream---
-                //---write back the text to the client---
-                //Console.WriteLine("Sending back : " + dataReceived);
-                //nwStream.Write(buffer, 0, bytesRead);
-                //client.Close();
-                //listener.Stop();
-                //Console.ReadLine();
             }
         }
 
-        private void ListenToClient(Client client)
+        private void ListenToClient(Account account)
         {
-            NetworkStream nwStream = client.tcpClient.GetStream();
+            NetworkStream nwStream = account.Client.tcpClient.GetStream();
 
             while (true)
             {
                 try
                 {
-                    //byte[] buffer = new byte[tcpClient.ReceiveBufferSize];
-
-                    ////---read incoming stream---
-                    //int bytesRead = nwStream.Read(buffer, 0, tcpClient.ReceiveBufferSize);
-
-                    ////---convert the data received into a string---
-                    //string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
                     InterpretIncomingMessage(nwStream);
                 }
                 catch
                 {
-                    RemoveConnection(client.UniqueId);
+                    RemoveConnection(account.Id);
                     Console.WriteLine("Client disconnected");
                     break;
                 }
@@ -90,23 +69,17 @@ namespace ChatServer
         {
             object received = JsonSerializerProvider.DeserializeBinary(nwStream);
 
-            //if (received is Client client)
-            //{
-            //    Console.WriteLine("Received: {0}#{1}", client.Username, client.Id);
-            //    connectedClients.RemoveAll(x => x.tcpClient == client.tcpClient);
-            //    AddConnection(client);
-            //}
-            /*else */
             if (received is Message message)
             {
                 Console.WriteLine("Message: to {0}, {1}, {2}", message.ReceiverUniqueId, message.Timestamp, message.EncryptedMessageString);
                 try
                 {
-                    var receiver = connectedClients.FirstOrDefault(x => x.UniqueId == message.ReceiverUniqueId);
+                    var receiver = connectedAccounts.FirstOrDefault(x => x.Id == message.ReceiverUniqueId);
                     if (receiver != null)
                     {
-                        var receiverNwStream = receiver.tcpClient.GetStream();
-                        JsonSerializerProvider.SerializeBinary(receiverNwStream, message); // Writes serialized binary data into the stream
+                        var receiverNwStream = receiver.Client.tcpClient.GetStream();
+                        // Writes serialized binary data into the stream
+                        JsonSerializerProvider.SerializeBinary(receiverNwStream, message); 
                     }
                 }
                 catch (Exception e)
@@ -120,26 +93,26 @@ namespace ChatServer
             }
         }
 
-        protected internal void AddConnection(Client clientObject)
+        protected internal void AddConnection(Account clientObject)
         {
-            connectedClients.Add(clientObject);
+            connectedAccounts.Add(clientObject);
         }
 
-        protected internal void RemoveConnection(int id)
+        protected internal void RemoveConnection(int uniqueId)
         {
-            Client client = connectedClients.FirstOrDefault(c => c.Id == id);
+            Account client = connectedAccounts.FirstOrDefault(c => c.Id == uniqueId);
 
             if (client != null)
-                connectedClients.Remove(client);
+                connectedAccounts.Remove(client);
         }
 
         public void Disconnect()
         {
             listener.Stop();
 
-            foreach (var client in connectedClients)
+            foreach (var account in connectedAccounts)
             {
-                client.Close();
+                account.Client.Close();
             }
 
             Environment.Exit(0);

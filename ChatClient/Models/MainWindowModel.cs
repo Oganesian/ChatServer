@@ -19,7 +19,7 @@ namespace ChatClient.Models
         }
         #endregion
 
-        public Client Client { get; set; }
+        public Account Account { get; set; }
         //public ObservableCollection<MyTabItemContainer> Chats { get; set; }
         public ObservableCollection<MyTabItem> ChatsToDisplay { get; set; }
         public MyTabItem CurrentChat { get; set; } = null;
@@ -28,7 +28,7 @@ namespace ChatClient.Models
 
         private MainWindowModel() 
         {
-            Client = new Client(); // TODO: Remove
+            Account = new Account(); // TODO: Remove
             ChatsToDisplay = new ObservableCollection<MyTabItem>();
         }
     }

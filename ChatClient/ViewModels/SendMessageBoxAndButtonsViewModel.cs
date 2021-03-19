@@ -9,7 +9,7 @@ namespace ChatClient.ViewModels
     public class SendMessageBoxAndButtonsViewModel : BindableBase
     {
         private readonly SendMessageBoxAndButtonsModel model;
-        private Client sender;
+        private Account sender;
         private ICommand _sendMessage;
         private string _textMessage;
 
@@ -51,12 +51,12 @@ namespace ChatClient.ViewModels
             {
                 //sender = new Client(); // TODO: Remove this
                 var mwvm = MainWindowViewModel.GetInstance();
-                sender = mwvm.Client;
+                sender = mwvm.Account;
                 var targetChat = mwvm.CurrentChat.DataContext as MyTabItemViewModel;
 
                 var message = new Message()
                 {
-                    SenderUniqueId = sender.UniqueId,
+                    SenderUniqueId = sender.Id,
                     ReceiverUniqueId = targetChat.GetReceiverUniqueId(),
                     Timestamp = DateTime.Now,
                     EncryptedMessageString = TextMessage,

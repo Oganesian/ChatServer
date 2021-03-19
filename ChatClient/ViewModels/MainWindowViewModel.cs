@@ -4,6 +4,7 @@ using ChatClient.Data;
 using ChatClient.Factories;
 using ChatClient.Models;
 using ChatClient.Serialization;
+using ChatClient.Services;
 using ChatClient.Views;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,8 @@ namespace ChatClient.ViewModels
         private readonly MainWindowModel model;
 
         #region Model reference types
-        private Client _client;
+        public Account _account;
+
         private string _fullUsername;
         private List<MyTabItemContainer> _chats;
         private ObservableCollection<MyTabItem> _chatsToDisplay;
@@ -40,16 +42,16 @@ namespace ChatClient.ViewModels
         #endregion
 
         #region Model Properties
-        public Client Client
+        public Account Account
         {
             get
             {
-                return model.Client;
+                return model.Account;
             }
             set
             {
-                model.Client = value;
-                SetProperty(ref _client, value);
+                model.Account = value;
+                SetProperty(ref _account, value);
             }
         }
         public string FullUsername
@@ -115,17 +117,23 @@ namespace ChatClient.ViewModels
 
             Chats = new List<MyTabItemContainer>();
 
-            if (Client != null)
-            {
-                Client.MessageReceived = ReceiveMessageAsync;
-                Client.Chats = LoadClientChats();
-                DisplayChats();
-            }
+
+            //_ = authService.Register("test@gmail.com", "yunglion", "123321V$%", "123321V$%");
+
+            //AuthenticationService authService = new AuthenticationService();
+            //_ = authService.Login("test@gmail.com", "123321V$%");
+
+
+            //if (Account != null) TODO: uncomment
+            //{
+            //    Account.Client.MessageReceived = ReceiveMessageAsync;
+            //    DisplayChats();
+            //}
         }
 
         private void DisplayChats()
         {
-            foreach (var chat in Client.Chats)
+            foreach (var chat in Account.Chats)
             {
                 Chats.Add(MyTabItemContainerFactory.Create(chat));
                 ChatsToDisplay.Add(Chats[^1].MyTabItem); // TODO: Check if it works
@@ -155,17 +163,12 @@ namespace ChatClient.ViewModels
             targetChat.ViewModel.AddMessage(message);
         }
 
-        private List<Chat> LoadClientChats()
+        public void SaveAccountChat(int receiverUniqueId)
         {
-            return JsonSerializerProvider.DeserializeClientChats(Client);
-        }
-
-        public void SaveClientChat(int receiverUniqueId)
-        {
-            var chat = Client.Chats.Find(x => x.receiverUniqueId == receiverUniqueId);
+            var chat = Account.Chats.Find(x => x.receiverUniqueId == receiverUniqueId);
             if(chat != null)
             {
-                JsonSerializerProvider.SerializeChat(Client, chat);
+                JsonSerializerProvider.SerializeChat(Account.Username, Account.PublicId, chat);
             }
         }
 
