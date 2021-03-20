@@ -14,6 +14,6 @@ namespace ChatClient.Services.AuthServices
     public interface IAuthenticationService
     {
         Task<RegistrationResult> Register(string email, string username, string password, string passwordConfirm);
-        Task<BaseAccount> Login(string username, string password);
+        Task<BaseAccount> Login(string email, string password);
     }
 }
