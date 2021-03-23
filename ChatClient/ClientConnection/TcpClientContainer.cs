@@ -9,7 +9,8 @@ using System.Windows;
 
 namespace ChatClient.ClientConnection
 {
-    public class TcpClientContainer
+    [Serializable]
+    public class TcpClientContainer // TODO: delete
     {
 
         public TcpClientContainer()
@@ -20,9 +21,16 @@ namespace ChatClient.ClientConnection
         public Func<Message, Task> MessageReceived { get; set; } // TODO: check safety
 
         #region Connection
+        [NonSerialized]
         private NetworkStream stream;
+
+        [NonSerialized]
         public TcpClient tcpClient;
+
+        [NonSerialized]
         private const int PORT_NO = 8888;
+
+        [NonSerialized]
         private const string SERVER_IP = "127.0.0.1";
         #endregion
 

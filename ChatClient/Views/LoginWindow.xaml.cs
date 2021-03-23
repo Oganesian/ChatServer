@@ -1,14 +1,14 @@
 ﻿using ChatClient.ViewModels;
 using System.Windows;
 
-namespace ChatClient
+namespace ChatClient.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginWindow : Window, ICloseable
     {
-        public MainWindow(BindableBase viewModel)
+        public LoginWindow(BindableBase viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

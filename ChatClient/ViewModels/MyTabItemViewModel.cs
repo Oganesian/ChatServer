@@ -12,7 +12,7 @@ namespace ChatClient.ViewModels
         private ObservableCollection<IMessageUserControl> _messages;
         private string _username;
 
-        private Chat _chat;
+        private readonly Chat _chat;
 
         public MyTabItemViewModel(Chat chat)
         {

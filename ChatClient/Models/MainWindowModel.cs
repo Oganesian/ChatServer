@@ -28,7 +28,6 @@ namespace ChatClient.Models
 
         private MainWindowModel() 
         {
-            Account = new Account(); // TODO: Remove
             ChatsToDisplay = new ObservableCollection<MyTabItem>();
         }
     }

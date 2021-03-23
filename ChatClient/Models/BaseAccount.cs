@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ChatClient.Models
 {
+    [Serializable]
     public class BaseAccount : DomainObject
     {
         public string Email { get; set; }

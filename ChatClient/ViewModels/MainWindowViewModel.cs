@@ -5,6 +5,7 @@ using ChatClient.Factories;
 using ChatClient.Models;
 using ChatClient.Serialization;
 using ChatClient.Services;
+using ChatClient.States.Authenticators;
 using ChatClient.Views;
 using System;
 using System.Collections.Generic;
@@ -20,15 +21,22 @@ namespace ChatClient.ViewModels
     {
         #region Singleton
         private static MainWindowViewModel instance;
-        public static MainWindowViewModel GetInstance()
+        public static MainWindowViewModel GetInstance(IAuthenticator authenticator)
         {
             if (instance == null)
             {
-                instance = new MainWindowViewModel();
+                instance = new MainWindowViewModel(authenticator);
             }
             return instance;
         }
+
+        public static MainWindowViewModel GetInstance()
+        {
+            return instance;
+        }
         #endregion
+
+        private readonly IAuthenticator _authenticator;
 
         private readonly MainWindowModel model;
 
@@ -111,28 +119,22 @@ namespace ChatClient.ViewModels
         private ICommand _connectToServer;
         #endregion
 
-        private MainWindowViewModel()
+        private MainWindowViewModel(IAuthenticator authenticator)
         {
+            _authenticator = authenticator;
             model = MainWindowModel.GetInstance();
+            Account = new Account(_authenticator.CurrentAccout);
 
-            Chats = new List<MyTabItemContainer>();
-
-
-            //_ = authService.Register("test@gmail.com", "yunglion", "123321V$%", "123321V$%");
-
-            //AuthenticationService authService = new AuthenticationService();
-            //_ = authService.Login("test@gmail.com", "123321V$%");
-
-
-            //if (Account != null) TODO: uncomment
-            //{
-            //    Account.Client.MessageReceived = ReceiveMessageAsync;
-            //    DisplayChats();
-            //}
+            if (Account != null)
+            {
+                Account.MessageReceivedCallback = ReceiveMessageAsync;
+                DisplayChats();
+            }
         }
 
         private void DisplayChats()
         {
+            Chats = new List<MyTabItemContainer>();
             foreach (var chat in Account.Chats)
             {
                 Chats.Add(MyTabItemContainerFactory.Create(chat));

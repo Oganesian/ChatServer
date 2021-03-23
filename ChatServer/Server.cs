@@ -15,7 +15,7 @@ namespace ChatServer
         private const int PORT = 8888;
         private const string SERVER_IP = "127.0.0.1";
 
-        private List<Account> connectedAccounts = new List<Account>();
+        private readonly List<Account> connectedAccounts = new List<Account>();
         private TcpListener listener;
 
         public void Listen()
@@ -39,7 +39,7 @@ namespace ChatServer
                     Console.WriteLine("A new client connected");
                     Console.WriteLine("Received: {0}#{1}", account.Username, account.PublicId);
                     //connectedClients.RemoveAll(x => x.tcpClient == client.tcpClient);
-                    account.Client.tcpClient = tcpClient;
+                    account.tcpClient = tcpClient;
                     AddConnection(account);
                     new Thread(() => ListenToClient(account)).Start();
                 }
@@ -48,7 +48,7 @@ namespace ChatServer
 
         private void ListenToClient(Account account)
         {
-            NetworkStream nwStream = account.Client.tcpClient.GetStream();
+            NetworkStream nwStream = account.tcpClient.GetStream();
 
             while (true)
             {
@@ -77,7 +77,7 @@ namespace ChatServer
                     var receiver = connectedAccounts.FirstOrDefault(x => x.Id == message.ReceiverUniqueId);
                     if (receiver != null)
                     {
-                        var receiverNwStream = receiver.Client.tcpClient.GetStream();
+                        var receiverNwStream = receiver.tcpClient.GetStream();
                         // Writes serialized binary data into the stream
                         JsonSerializerProvider.SerializeBinary(receiverNwStream, message); 
                     }
@@ -112,7 +112,7 @@ namespace ChatServer
 
             foreach (var account in connectedAccounts)
             {
-                account.Client.Close();
+                account.Close();
             }
 
             Environment.Exit(0);

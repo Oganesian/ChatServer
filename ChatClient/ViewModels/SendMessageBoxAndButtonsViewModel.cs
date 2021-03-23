@@ -10,12 +10,17 @@ namespace ChatClient.ViewModels
     {
         private readonly SendMessageBoxAndButtonsModel model;
         private Account sender;
-        private ICommand _sendMessage;
         private string _textMessage;
+
+        //public SendMessageBoxAndButtonsViewModel()
+        //{
+
+        //}
 
         public SendMessageBoxAndButtonsViewModel()
         {
             model = SendMessageBoxAndButtonsModel.GetInstance();
+            SendMessage = new CommandHandler(() => SendMessageExec(), () => CanExecute);
         }
 
         public string TextMessage
@@ -31,26 +36,15 @@ namespace ChatClient.ViewModels
             }
         }
 
-        #region Commands Getters
-        public ICommand SendMessage
-        {
-            get
-            {
-                if (_sendMessage == null)
-                {
-                    _sendMessage = new CommandHandler(() => SendMessageExec(), () => CanExecute);
-                }
-                return _sendMessage;
-            }
-        }
-        #endregion
+        public ICommand SendMessage { get; }
 
         private void SendMessageExec()
         {
-            if (!string.IsNullOrEmpty(TextMessage))
+            var mwvm = MainWindowViewModel.GetInstance();
+            if (!string.IsNullOrEmpty(TextMessage) && mwvm != null)
             {
                 //sender = new Client(); // TODO: Remove this
-                var mwvm = MainWindowViewModel.GetInstance();
+                //var mwvm = MainWindowViewModel.GetInstance();
                 sender = mwvm.Account;
                 var targetChat = mwvm.CurrentChat.DataContext as MyTabItemViewModel;
 
