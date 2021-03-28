@@ -1,5 +1,5 @@
 ﻿using AccountAndConnection;
-using ChatClient.Services.AuthServices;
+using Services.AuthServices;
 using System;
 using System.Threading.Tasks;
 

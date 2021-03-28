@@ -1,6 +1,5 @@
 ﻿using AccountAndConnection;
-using ChatClient.Models;
-using ChatClient.Services.AuthServices;
+using Services.AuthServices;
 using System.Threading.Tasks;
 
 namespace ChatClient.States.Authenticators

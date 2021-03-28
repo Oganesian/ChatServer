@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
 
-namespace ChatClient.Exceptions
+namespace Services.Exceptions
 {
     public class InvalidPasswordException : Exception
     {

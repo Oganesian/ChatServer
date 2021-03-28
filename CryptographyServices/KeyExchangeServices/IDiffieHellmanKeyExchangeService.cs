@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChatClient.Services.CryptographyServices
+namespace CryptographyServices.KeyExchangeServices
 {
     public interface IDiffieHellmanKeyExchangeService
     {

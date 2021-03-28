@@ -1,11 +1,8 @@
-﻿using ChatClient.DataBaseConnection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Services.DataBaseConnection;
 
-namespace ChatClient.Factories
+namespace Services.Factories
 {
     public class ChatClientDbContextFactory : IDesignTimeDbContextFactory<DbContextBase>
     {

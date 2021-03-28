@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using AccountAndConnection;
 using Serialization;
+using CryptographyServices.KeyExchangeServices;
 
 namespace ChatClient.ViewModels
 {
@@ -20,11 +21,11 @@ namespace ChatClient.ViewModels
     {
         #region Singleton
         private static MainWindowViewModel instance;
-        public static MainWindowViewModel GetInstance(IAuthenticator authenticator)
+        public static MainWindowViewModel GetInstance(IAuthenticator authenticator, IDiffieHellmanKeyExchangeService keyExchangeService)
         {
             if (instance == null)
             {
-                instance = new MainWindowViewModel(authenticator);
+                instance = new MainWindowViewModel(authenticator, keyExchangeService);
             }
             return instance;
         }
@@ -36,6 +37,7 @@ namespace ChatClient.ViewModels
         #endregion
 
         private readonly IAuthenticator _authenticator;
+        private readonly IDiffieHellmanKeyExchangeService _keyExchangeService;
 
         private readonly MainWindowModel model;
 
@@ -114,11 +116,12 @@ namespace ChatClient.ViewModels
         }
         #endregion
 
-        private MainWindowViewModel(IAuthenticator authenticator)
+        private MainWindowViewModel(IAuthenticator authenticator, IDiffieHellmanKeyExchangeService keyExchangeService)
         {
             _authenticator = authenticator;
+            _keyExchangeService = keyExchangeService;
             model = MainWindowModel.GetInstance();
-            Account = new Account(_authenticator.CurrentAccout);
+            Account = new Account(_keyExchangeService, _authenticator.CurrentAccout);
 
             if (Account != null)
             {

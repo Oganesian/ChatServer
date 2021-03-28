@@ -1,13 +1,13 @@
 ﻿using AccountAndConnection;
-using ChatClient.DataBaseConnection;
-using ChatClient.Factories;
 using Microsoft.EntityFrameworkCore;
+using Services.DataBaseConnection;
+using Services.Factories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.Services.DataServices
+namespace Services.DataServices
 {
     public class AccountDataService : IAccountDataService
     {

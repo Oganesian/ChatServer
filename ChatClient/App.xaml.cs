@@ -1,12 +1,12 @@
-﻿using ChatClient.Factories;
-using ChatClient.Factories.ViewModelFactories;
-using ChatClient.Factories.WindowFactories;
-using ChatClient.Services.AuthServices;
-using ChatClient.Services.DataServices;
+﻿using ChatClient.Factories.WindowFactories;
 using ChatClient.States.Authenticators;
 using ChatClient.ViewModels;
 using ChatClient.Views;
+using CryptographyServices.KeyExchangeServices;
 using Microsoft.Extensions.DependencyInjection;
+using Services.AuthServices;
+using Services.DataServices;
+using Services.Factories;
 using System;
 using System.Windows;
 
@@ -32,6 +32,7 @@ namespace ChatClient
             IServiceCollection services = new ServiceCollection();
 
             services.AddSingleton<ChatClientDbContextFactory>();
+            services.AddSingleton<IDiffieHellmanKeyExchangeService, DiffieHellmanKeyExchangeService>();
             services.AddSingleton<IAccountDataService, AccountDataService>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IAuthenticator, Authenticator>();

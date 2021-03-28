@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ChatClient.Services.DataServices;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using ChatClient.ClientConnection;
-using ChatClient.Factories;
-using System.Linq;
-using ChatClient.Models;
+using Services.DataServices;
+using AccountAndConnection;
+using Services.Factories;
 
 namespace ChatClient.Services.DataServices.Tests
 {

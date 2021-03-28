@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 //using MySQL.Data.EntityFrameworkCore.Extensions;
 
-namespace ChatClient.DataBaseConnection
+namespace Services.DataBaseConnection
 {
     public class DbContextBase : DbContext
     {

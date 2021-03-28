@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serializat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndConnection", "AccountAndConnection\AccountAndConnection.csproj", "{B08C348A-B749-468F-8503-7F111DD6B8DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{12B8A8C0-9133-4721-ABA3-C814A37C7FED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptographyServices", "CryptographyServices\CryptographyServices.csproj", "{D8E833EC-6A3F-4193-81B4-019108CA808F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{B08C348A-B749-468F-8503-7F111DD6B8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08C348A-B749-468F-8503-7F111DD6B8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B08C348A-B749-468F-8503-7F111DD6B8DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12B8A8C0-9133-4721-ABA3-C814A37C7FED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12B8A8C0-9133-4721-ABA3-C814A37C7FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12B8A8C0-9133-4721-ABA3-C814A37C7FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12B8A8C0-9133-4721-ABA3-C814A37C7FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E833EC-6A3F-4193-81B4-019108CA808F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E833EC-6A3F-4193-81B4-019108CA808F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E833EC-6A3F-4193-81B4-019108CA808F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E833EC-6A3F-4193-81B4-019108CA808F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

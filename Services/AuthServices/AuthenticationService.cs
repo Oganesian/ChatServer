@@ -1,19 +1,22 @@
 ﻿using AccountAndConnection;
-using ChatClient.Exceptions;
-using ChatClient.Services.DataServices;
+using CryptographyServices.KeyExchangeServices;
 using Microsoft.AspNet.Identity;
+using Services.DataServices;
+using Services.Exceptions;
 using System;
 using System.Threading.Tasks;
 
-namespace ChatClient.Services.AuthServices
+namespace Services.AuthServices
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IAccountDataService _accountDataService;
+        private readonly IDiffieHellmanKeyExchangeService _keyExchangeService;
 
-        public AuthenticationService(IAccountDataService accountDataService)
+        public AuthenticationService(IAccountDataService accountDataService, IDiffieHellmanKeyExchangeService keyExchangeService)
         {
             _accountDataService = accountDataService;
+            _keyExchangeService = keyExchangeService;
         }
 
         public async Task<BaseAccount> Login(string email, string password)
@@ -56,7 +59,7 @@ namespace ChatClient.Services.AuthServices
                 IPasswordHasher hasher = new PasswordHasher();
                 string passwordHash = hasher.HashPassword(password);
 
-                Account account = new Account()
+                Account account = new Account(_keyExchangeService)
                 {
                     Email = email,
                     Username = username,

@@ -1,7 +1,7 @@
 ﻿using AccountAndConnection;
 using System.Threading.Tasks;
 
-namespace ChatClient.Services.DataServices
+namespace Services.DataServices
 {
     public interface IAccountDataService : IDataService<BaseAccount>
     {

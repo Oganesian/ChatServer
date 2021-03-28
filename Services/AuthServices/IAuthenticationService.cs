@@ -1,8 +1,7 @@
 ﻿using AccountAndConnection;
-using ChatClient.Models;
 using System.Threading.Tasks;
 
-namespace ChatClient.Services.AuthServices
+namespace Services.AuthServices
 {
     public enum RegistrationResult
     {

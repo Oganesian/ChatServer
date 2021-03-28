@@ -1,11 +1,11 @@
 ﻿using AccountAndConnection;
-using ChatClient.DataBaseConnection;
-using ChatClient.Factories;
 using Microsoft.EntityFrameworkCore;
+using Services.DataBaseConnection;
+using Services.Factories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ChatClient.Services.DataServices
+namespace Services.DataServices
 {
     public class GenericDataService<T> : IDataService<T> where T : DomainObject
     {

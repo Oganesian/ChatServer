@@ -1,4 +1,5 @@
 ﻿using ChatData;
+using CryptographyServices.KeyExchangeServices;
 using Serialization;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace AccountAndConnection
         private byte[] privateKey;
         private byte[] sharedPrivateKey;
 
+        private readonly IDiffieHellmanKeyExchangeService _keyExchangeService;
+
         public List<Chat> Chats { get; private set; }
 
         public Func<Message, Task> MessageReceivedCallback
@@ -23,20 +26,30 @@ namespace AccountAndConnection
             set => messageReceivedCallback = value;
         }
 
-        public Account()
+        public Account(IDiffieHellmanKeyExchangeService keyExchangeService)
         {
-            Chats = new List<Chat>();
-            Connect();
-            LoadChats();
+            _keyExchangeService = keyExchangeService;
+            InitializeAccount();
         }
 
-        public Account(BaseAccount account)
+        public Account(IDiffieHellmanKeyExchangeService keyExchangeService, BaseAccount account)
         {
             Id = account.Id;
             Email = account.Email;
             PasswordHash = account.PasswordHash;
             PublicId = account.PublicId;
             Username = account.Username;
+
+            _keyExchangeService = keyExchangeService;
+            InitializeAccount();
+        }
+
+        private void InitializeAccount()
+        {
+            // For new connections
+            var keysTuple = _keyExchangeService.CreateKeyPair();
+            publicKey = keysTuple.publicKey;
+            privateKey = keysTuple.privateKey;
 
             Chats = new List<Chat>();
             Connect();
@@ -47,16 +60,6 @@ namespace AccountAndConnection
         {
             Chats = JsonSerializerProvider.DeserializeChats(Username, PublicId);
         }
-
-        //public void SendMessage(Message message)
-        //{
-        //    Client.SendMessage(message);
-        //}
-
-        //public TcpClientContainer()
-        //{
-        //    Connect();
-        //}
 
         #region Connection
         [NonSerialized]
