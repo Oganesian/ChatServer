@@ -1,7 +1,6 @@
-﻿using ChatClient.ClientConnection;
-using System;
+﻿using System;
 
-namespace ChatClient.Data
+namespace ChatData
 {
     [Serializable()]
     public class Message

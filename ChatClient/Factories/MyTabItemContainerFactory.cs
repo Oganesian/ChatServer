@@ -1,5 +1,5 @@
 ﻿using ChatClient.AuxiliaryClasses;
-using ChatClient.Data;
+using ChatData;
 using ChatClient.ViewModels;
 using ChatClient.Views;
 

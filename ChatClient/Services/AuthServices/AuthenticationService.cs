@@ -1,8 +1,5 @@
-﻿using ChatClient.ClientConnection;
-using ChatClient.DataBaseConnection;
+﻿using AccountAndConnection;
 using ChatClient.Exceptions;
-using ChatClient.Models;
-using ChatClient.Services.AuthServices;
 using ChatClient.Services.DataServices;
 using Microsoft.AspNet.Identity;
 using System;

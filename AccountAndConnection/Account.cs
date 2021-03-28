@@ -1,18 +1,20 @@
-﻿using ChatClient.Data;
-using ChatClient.Models;
-using ChatClient.Serialization;
+﻿using ChatData;
+using Serialization;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 
-namespace ChatClient.ClientConnection
+namespace AccountAndConnection
 {
     [Serializable]
     public class Account : BaseAccount
     {
+        public byte[] publicKey;
+        private byte[] privateKey;
+        private byte[] sharedPrivateKey;
+
         public List<Chat> Chats { get; private set; }
 
         public Func<Message, Task> MessageReceivedCallback
@@ -20,13 +22,10 @@ namespace ChatClient.ClientConnection
             get => messageReceivedCallback;
             set => messageReceivedCallback = value;
         }
-        //[NonSerialized]
-        //public TcpClientContainer Client { get; private set; }
 
         public Account()
         {
             Chats = new List<Chat>();
-
             Connect();
             LoadChats();
         }
@@ -40,7 +39,6 @@ namespace ChatClient.ClientConnection
             Username = account.Username;
 
             Chats = new List<Chat>();
-
             Connect();
             LoadChats();
         }
@@ -87,7 +85,7 @@ namespace ChatClient.ClientConnection
             }
             catch (Exception e) // TODO: clean up
             {
-                MessageBox.Show("Server is not available: " + e.Message);
+                //MessageBox.Show("Server is not available: " + e.Message);
             }
         }
 

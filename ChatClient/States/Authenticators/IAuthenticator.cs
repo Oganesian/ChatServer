@@ -1,4 +1,4 @@
-﻿using ChatClient.ClientConnection;
+﻿using AccountAndConnection;
 using ChatClient.Models;
 using ChatClient.Services.AuthServices;
 using System.Threading.Tasks;

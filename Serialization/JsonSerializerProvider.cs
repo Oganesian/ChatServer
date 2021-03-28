@@ -1,11 +1,11 @@
-﻿using ChatClient.Data;
+﻿using ChatData;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ChatClient.Serialization
+namespace Serialization
 {
     public class JsonSerializerProvider
     {

@@ -1,11 +1,7 @@
-﻿using ChatClient.ClientConnection;
-using ChatClient.Serialization;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Text;
 
-namespace ChatClient.Data
+namespace ChatData
 {
     [Serializable()]
     public class Chat

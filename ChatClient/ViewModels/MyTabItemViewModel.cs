@@ -1,7 +1,7 @@
-﻿using ChatClient.Data;
-using ChatClient.Factories;
+﻿using ChatClient.Factories;
 using ChatClient.Models;
 using ChatClient.Views;
+using ChatData;
 using System.Collections.ObjectModel;
 
 namespace ChatClient.ViewModels

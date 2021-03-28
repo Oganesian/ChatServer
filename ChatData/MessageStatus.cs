@@ -1,4 +1,4 @@
-﻿namespace ChatClient.Data
+﻿namespace ChatData
 {
     public enum MessageStatus
     {

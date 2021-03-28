@@ -1,5 +1,5 @@
-﻿using ChatClient.AuxiliaryClasses;
-using ChatClient.ClientConnection;
+﻿using AccountAndConnection;
+using ChatClient.AuxiliaryClasses;
 using ChatClient.Views;
 using System.Collections.ObjectModel;
 

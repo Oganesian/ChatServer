@@ -1,10 +1,7 @@
 ﻿using ChatClient.AuxiliaryClasses;
-using ChatClient.ClientConnection;
-using ChatClient.Data;
+using ChatData;
 using ChatClient.Factories;
 using ChatClient.Models;
-using ChatClient.Serialization;
-using ChatClient.Services;
 using ChatClient.States.Authenticators;
 using ChatClient.Views;
 using System;
@@ -14,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using AccountAndConnection;
+using Serialization;
 
 namespace ChatClient.ViewModels
 {
@@ -115,10 +114,6 @@ namespace ChatClient.ViewModels
         }
         #endregion
 
-        #region Commands
-        private ICommand _connectToServer;
-        #endregion
-
         private MainWindowViewModel(IAuthenticator authenticator)
         {
             _authenticator = authenticator;
@@ -154,7 +149,7 @@ namespace ChatClient.ViewModels
                 await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                     new Action(() => targetChat.ViewModel.AddMessage(message)));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -168,30 +163,10 @@ namespace ChatClient.ViewModels
         public void SaveAccountChat(int receiverUniqueId)
         {
             var chat = Account.Chats.Find(x => x.receiverUniqueId == receiverUniqueId);
-            if(chat != null)
+            if (chat != null)
             {
                 JsonSerializerProvider.SerializeChat(Account.Username, Account.PublicId, chat);
             }
-        }
-
-
-        #region Commands Getters
-        public ICommand ConnectToServer
-        {
-            get
-            {
-                if (_connectToServer == null)
-                {
-                    _connectToServer = new CommandHandler(() => ConectToServerExec(), () => CanExecute);
-                }
-                return _connectToServer;
-            }
-        }
-        #endregion
-
-        private void ConectToServerExec()
-        {
-
         }
     }
 }

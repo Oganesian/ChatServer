@@ -1,5 +1,4 @@
-﻿using ChatClient.ClientConnection;
-using ChatClient.Models;
+﻿using AccountAndConnection;
 using Microsoft.EntityFrameworkCore;
 //using MySQL.Data.EntityFrameworkCore.Extensions;
 

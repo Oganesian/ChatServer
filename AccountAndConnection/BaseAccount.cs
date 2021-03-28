@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChatClient.Models
+namespace AccountAndConnection
 {
     [Serializable]
     public class BaseAccount : DomainObject

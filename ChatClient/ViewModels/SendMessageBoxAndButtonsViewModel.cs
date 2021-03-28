@@ -1,6 +1,6 @@
-﻿using ChatClient.ClientConnection;
-using ChatClient.Data;
+﻿using AccountAndConnection;
 using ChatClient.Models;
+using ChatData;
 using System;
 using System.Windows.Input;
 
@@ -43,8 +43,6 @@ namespace ChatClient.ViewModels
             var mwvm = MainWindowViewModel.GetInstance();
             if (!string.IsNullOrEmpty(TextMessage) && mwvm != null)
             {
-                //sender = new Client(); // TODO: Remove this
-                //var mwvm = MainWindowViewModel.GetInstance();
                 sender = mwvm.Account;
                 var targetChat = mwvm.CurrentChat.DataContext as MyTabItemViewModel;
 

@@ -21,10 +21,6 @@ namespace ChatClient
         {
             IServiceProvider serviceProvider = CreateServiceProvider();
 
-            //Window window = new MainWindow();
-            //window.DataContext = MainWindowViewModel.GetInstance();
-            //window.Show();
-
             Window window = serviceProvider.GetRequiredService<LoginWindow>();
             window.Show();
 
@@ -39,10 +35,6 @@ namespace ChatClient
             services.AddSingleton<IAccountDataService, AccountDataService>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IAuthenticator, Authenticator>();
-
-            //services.AddSingleton<IViewModelFactory<MainWindowViewModel>, MainWindowViewModelFactory>();
-            //services.AddSingleton<IViewModelFactory<LoginViewModel>, LoginViewModelFactory>();
-            //services.AddSingleton<IViewModelFactory<RegisterViewModel>, RegisterViewModelFactory>();
 
             services.AddSingleton<LoginViewModel>();
             services.AddSingleton<RegisterViewModel>();

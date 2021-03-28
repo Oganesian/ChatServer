@@ -1,10 +1,8 @@
-﻿using ChatClient.DataBaseConnection;
+﻿using AccountAndConnection;
+using ChatClient.DataBaseConnection;
 using ChatClient.Factories;
-using ChatClient.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatClient.Services.DataServices

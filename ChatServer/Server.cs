@@ -1,6 +1,6 @@
-﻿using ChatClient.ClientConnection;
-using ChatClient.Data;
-using ChatClient.Serialization;
+﻿using AccountAndConnection;
+using ChatData;
+using Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

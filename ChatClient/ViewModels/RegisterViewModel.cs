@@ -54,7 +54,8 @@ namespace ChatClient.ViewModels
 
         private async void RegisterExec(ICloseable window)
         {
-            if(await _authenticator.Register(Email, Username, Password, PasswordConfirmation) == Services.AuthServices.RegistrationResult.Success)
+            var registrationResult = await _authenticator.Register(Email, Username, Password, PasswordConfirmation);
+            if (registrationResult == Services.AuthServices.RegistrationResult.Success)
             {
                 var loginWindow = _windowFactory.CreateWindow(Factories.ViewType.LoginWindow);
                 loginWindow.Show();
