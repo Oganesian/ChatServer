@@ -6,20 +6,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient.Views"
         mc:Ignorable="d"
-                xmlns:vm="clr-namespace:ChatClient.ViewModels"
+        xmlns:vm="clr-namespace:ChatClient.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-        xmlns:Behaviors="clr-namespace:ChatClient.Behaviors"
+        xmlns:Behaviors="clr-namespace:ChatClient.Behaviors" d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" AllowsTransparency="True"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
         MinWidth="220" MinHeight="240"
-        Title="Login" Height="350" Width="500">
+        Title="Login" Height="350" Width="500"
+        MouseDown="LoginWindowInstance_MouseDown">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CloseWindowCommand_Executed"/>
+        <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="MinimizeWindowCommand_Executed"/>
+    </Window.CommandBindings>
     <Grid>
+        <DockPanel HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Height="30">
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Command="{x:Static SystemCommands.MinimizeWindowCommand}">
+                <Button.Content>
+                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                </Button.Content>
+            </Button>
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="#E53935" Command="{x:Static SystemCommands.CloseWindowCommand}">
+                <Button.Content>
+                    <materialDesign:PackIcon Kind="WindowClose"/>
+                </Button.Content>
+            </Button>
+        </DockPanel>
         <Grid Width="200" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -31,7 +52,8 @@
                 Grid.Row="0"
                 materialDesign:HintAssist.Hint="E-Mail"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Padding="0 -5"/>
             <PasswordBox
                 Grid.Row="1"
                 x:Name="PasswordBox"

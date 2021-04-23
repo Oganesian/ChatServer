@@ -12,10 +12,16 @@ namespace AccountAndConnection
     [Serializable]
     public class Account : BaseAccount
     {
+        [NonSerialized]
         public byte[] publicKey;
+
+        [NonSerialized]
         private byte[] privateKey;
+
+        [NonSerialized]
         private byte[] sharedPrivateKey;
 
+        [NonSerialized]
         private readonly IDiffieHellmanKeyExchangeService _keyExchangeService;
 
         public List<Chat> Chats { get; private set; }
@@ -64,6 +70,7 @@ namespace AccountAndConnection
         #region Connection
         [NonSerialized]
         private Func<Message, Task> messageReceivedCallback;
+
         [NonSerialized]
         private NetworkStream stream;
 
@@ -106,7 +113,7 @@ namespace AccountAndConnection
                     {
                         try
                         {
-                            MessageReceivedCallback.Invoke(message);
+                            Task.Run(() => MessageReceivedCallback(message));
                         }
                         catch (Exception e)
                         {

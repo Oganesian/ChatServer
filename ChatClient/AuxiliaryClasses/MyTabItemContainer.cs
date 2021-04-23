@@ -17,6 +17,6 @@ namespace ChatClient.AuxiliaryClasses
                 if(MyTabItem != null) MyTabItem.DataContext = value; // MyTabItem?.DataContext = value; doesn't work for some reason
             }
         }
-        public MyTabItem MyTabItem { get; set; }
+        public ChatTabItem MyTabItem { get; set; }
     }
 }

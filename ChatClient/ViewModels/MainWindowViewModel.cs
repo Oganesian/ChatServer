@@ -46,8 +46,8 @@ namespace ChatClient.ViewModels
 
         private string _fullUsername;
         private List<MyTabItemContainer> _chats;
-        private ObservableCollection<MyTabItem> _chatsToDisplay;
-        private MyTabItem _currentChat;
+        private ObservableCollection<ChatTabItem> _chatsToDisplay;
+        private ChatTabItem _currentChat;
         #endregion
 
         #region Model Properties
@@ -89,7 +89,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ObservableCollection<MyTabItem> ChatsToDisplay
+        public ObservableCollection<ChatTabItem> ChatsToDisplay
         {
             get
             {
@@ -102,7 +102,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public MyTabItem CurrentChat
+        public ChatTabItem CurrentChat
         {
             get
             {

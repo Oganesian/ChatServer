@@ -1,5 +1,6 @@
 ﻿using ChatClient.ViewModels;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ChatClient
 {

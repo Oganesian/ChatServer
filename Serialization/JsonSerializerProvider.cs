@@ -11,17 +11,6 @@ namespace Serialization
     {
         private static readonly string CHATS_DIR = "Chats/";
 
-        //public static void SerializeClient(Client client)
-        //{
-        //    string fullPath = CHATS_DIR + client.Username + client.Id;
-        //    string jsonString = JsonConvert.SerializeObject(client, Formatting.Indented);
-
-        //    if (!Directory.Exists(CHATS_DIR))
-        //        Directory.CreateDirectory(CHATS_DIR);
-
-        //    File.WriteAllText(fullPath, jsonString);
-        //}
-
         public static void SerializeChat(string username, int id, Chat chat)
         {
             string fullPath = CHATS_DIR + username + id + "/";

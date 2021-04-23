@@ -14,11 +14,32 @@
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" AllowsTransparency="True"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
         MinWidth="220" MinHeight="240"
-        Title="Register" Height="350" Width="500">
+        Title="Login" Height="350" Width="500"
+        MouseDown="LoginWindowInstance_MouseDown">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CloseWindowCommand_Executed"/>
+        <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="MinimizeWindowCommand_Executed"/>
+    </Window.CommandBindings>
     <Grid>
+        <DockPanel HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Height="30">
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Command="{x:Static SystemCommands.MinimizeWindowCommand}">
+                <Button.Content>
+                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                </Button.Content>
+            </Button>
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="#E53935" Command="{x:Static SystemCommands.CloseWindowCommand}">
+                <Button.Content>
+                    <materialDesign:PackIcon Kind="WindowClose"/>
+                </Button.Content>
+            </Button>
+        </DockPanel>
         <Grid Width="200" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -39,7 +60,8 @@
                 Grid.Row="1"
                 materialDesign:HintAssist.Hint="Username"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Padding="0 -5" Margin="0 10 0 0"/>
             <PasswordBox
                 Grid.Row="2"
                 x:Name="PasswordBox"
@@ -65,7 +87,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Command="{Binding Register}" IsDefault="True" CommandParameter="{Binding  ElementName=RegisterWindowInstance}" Content="Register" Foreground="White"/>
-                <Button Grid.Column="2" Command="{Binding OpenRegisterWindow}" CommandParameter="{Binding  ElementName=RegisterWindowInstance}" Content="Login" Foreground="White"/>
+                <Button Grid.Column="2" Command="{Binding OpenLoginWindow}" CommandParameter="{Binding  ElementName=RegisterWindowInstance}" Content="Login" Foreground="White"/>
             </Grid>
         </Grid>
     </Grid>
