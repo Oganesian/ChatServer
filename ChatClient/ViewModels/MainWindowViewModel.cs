@@ -1,19 +1,18 @@
-﻿using ChatClient.AuxiliaryClasses;
-using ChatData;
+﻿using AccountAndConnection;
+using ChatClient.AuxiliaryClasses;
 using ChatClient.Factories;
 using ChatClient.Models;
 using ChatClient.States.Authenticators;
 using ChatClient.Views;
+using ChatData;
+using CryptographyServices.KeyExchangeServices;
+using Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Threading;
-using AccountAndConnection;
-using Serialization;
-using CryptographyServices.KeyExchangeServices;
 
 namespace ChatClient.ViewModels
 {
@@ -45,18 +44,15 @@ namespace ChatClient.ViewModels
         public Account _account;
 
         private string _fullUsername;
-        private List<MyTabItemContainer> _chats;
-        private ObservableCollection<ChatTabItem> _chatsToDisplay;
-        private ChatTabItem _currentChat;
+        private List<ChatItemContainer> _chats;
+        private ObservableCollection<ChatView> _chatsToDisplay;
+        private ChatView _currentChat;
         #endregion
 
         #region Model Properties
         public Account Account
         {
-            get
-            {
-                return model.Account;
-            }
+            get => model.Account;
             set
             {
                 model.Account = value;
@@ -64,12 +60,8 @@ namespace ChatClient.ViewModels
             }
         }
         public string FullUsername
-
         {
-            get
-            {
-                return model.FullUsername;
-            }
+            get => model.FullUsername;
             set
             {
                 model.FullUsername = value;
@@ -77,24 +69,16 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public List<MyTabItemContainer> Chats
+        public List<ChatItemContainer> Chats
         {
-            get
-            {
-                return _chats;
-            }
-            set
-            {
-                SetProperty(ref _chats, value);
-            }
+            get => _chats;
+            set => SetProperty(ref _chats, value);
+
         }
 
-        public ObservableCollection<ChatTabItem> ChatsToDisplay
+        public ObservableCollection<ChatView> ChatsToDisplay
         {
-            get
-            {
-                return model.ChatsToDisplay;
-            }
+            get => model.ChatsToDisplay;
             set
             {
                 model.ChatsToDisplay = value;
@@ -102,12 +86,9 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ChatTabItem CurrentChat
+        public ChatView CurrentChat
         {
-            get
-            {
-                return model.CurrentChat;
-            }
+            get => model.CurrentChat;
             set
             {
                 model.CurrentChat = value;
@@ -132,12 +113,11 @@ namespace ChatClient.ViewModels
 
         private void DisplayChats()
         {
-            Chats = new List<MyTabItemContainer>();
+            Chats = new List<ChatItemContainer>();
             foreach (var chat in Account.Chats)
             {
-                Chats.Add(MyTabItemContainerFactory.Create(chat));
-                ChatsToDisplay.Add(Chats[^1].MyTabItem); // TODO: Check if it works
-                //ChatsToDisplay.Add(MyTabItemContainerFactory.Create(chat).MyTabItem);
+                Chats.Add(ChatItemContainerFactory.Create(chat));
+                ChatsToDisplay.Add(Chats[^1].ChatItem); // TODO: wtf
             }
         }
 
@@ -158,7 +138,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        void AddReceivedMessageToTargetChat(MyTabItemContainer targetChat, Message message)
+        void AddReceivedMessageToTargetChat(ChatItemContainer targetChat, Message message)
         {
             targetChat.ViewModel.AddMessage(message);
         }

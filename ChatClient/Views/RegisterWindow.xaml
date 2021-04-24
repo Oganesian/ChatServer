@@ -54,7 +54,8 @@
                 materialDesign:HintAssist.Hint="E-Mail"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 VerticalAlignment="Center"
-                Padding="0 -5"/>
+                Padding="0 -5"
+                MinLines="2"/>
             <TextBox
                 Text="{Binding Username}"
                 Grid.Row="1"

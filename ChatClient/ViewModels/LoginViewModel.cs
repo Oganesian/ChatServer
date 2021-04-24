@@ -1,6 +1,7 @@
 ﻿using ChatClient.Factories.WindowFactories;
 using ChatClient.States.Authenticators;
 using ChatClient.Views;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,6 +14,7 @@ namespace ChatClient.ViewModels
 
         private string _email;
         private string _password;
+        private bool _inProgress;
 
         public string Email
         {
@@ -24,6 +26,12 @@ namespace ChatClient.ViewModels
         {
             get => _password;
             set => SetProperty(ref _password, value);
+        }
+
+        public bool InProgress
+        {
+            get => _inProgress;
+            set => SetProperty(ref _inProgress, value);
         }
 
 
@@ -41,7 +49,10 @@ namespace ChatClient.ViewModels
 
         private async void LoginExec(ICloseable window)
         {
-            if (await _authenticator.Login(Email, Password))
+            InProgress = true;
+            var loginSuccess = await Task.Run(() => _authenticator.Login(Email, Password));
+
+            if (loginSuccess)
             {
                 var mainWindow = _windowFactory.CreateWindow(Factories.ViewType.MainWindow);
                 mainWindow.Show();
@@ -51,6 +62,7 @@ namespace ChatClient.ViewModels
             {
                 // TODO: some dialog
             }
+            InProgress = false;
         }
 
         private void OpenRegisterWindowExec(ICloseable window)

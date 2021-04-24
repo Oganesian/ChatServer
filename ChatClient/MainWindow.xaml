@@ -16,17 +16,61 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Chat" Height="450" Width="800" MinWidth="420" MinHeight="240"
         WindowStartupLocation="CenterScreen">
-    <!--<Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>-->
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170" />
+            <ColumnDefinition Width="*" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" Margin="10 0 20 0" ToolTip="Freund hinzufügen">
+                <materialDesign:PackIcon Kind="AccountAdd"/>
+            </Button>
+            <DataGrid 
+                  Grid.Row="1"
+                  ItemsSource="{Binding ChatsToDisplay}" 
+                  SelectedItem="{Binding CurrentChat, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectionMode="Single"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="None"
+                  HorizontalContentAlignment="Center">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                      IsReadOnly="True"
+                      Binding="{Binding DataContext.Username}"
+                      Width="*">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                                <Setter Property="FontWeight" Value="Medium"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Padding" Value="15"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#434f44" />
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#324f34"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <ContentControl Grid.Column="1" Content="{Binding CurrentChat, UpdateSourceTrigger=PropertyChanged}"/>
+
+
         <!--<Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>-->
-        <TabControl Grid.Row="1" Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+        <!--<TabControl Grid.Row="1" Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
                     ItemsSource="{Binding ChatsToDisplay}" 
                     SelectedItem="{Binding CurrentChat}"/>
-        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" MaxWidth="220" Height="35" TextAlignment="Center" Text="{Binding FullUsername}"/>
+        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" MaxWidth="220" Height="35" TextAlignment="Center" Text="{Binding FullUsername}"/>-->
     </Grid>
 </Window>

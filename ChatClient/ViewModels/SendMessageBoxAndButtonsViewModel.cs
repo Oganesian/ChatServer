@@ -44,7 +44,7 @@ namespace ChatClient.ViewModels
             if (!string.IsNullOrEmpty(TextMessage) && mwvm != null)
             {
                 sender = mwvm.Account;
-                var targetChat = mwvm.CurrentChat.DataContext as MyTabItemViewModel;
+                var targetChat = mwvm.CurrentChat.DataContext as ChatViewModel;
 
                 var message = new Message()
                 {

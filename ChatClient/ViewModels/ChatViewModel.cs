@@ -6,17 +6,17 @@ using System.Collections.ObjectModel;
 
 namespace ChatClient.ViewModels
 {
-    public class MyTabItemViewModel : BindableBase
+    public class ChatViewModel : BindableBase
     {
-        private readonly MyTabItemModel model;
+        private readonly ChatItemModel model;
         private ObservableCollection<IMessageUserControl> _messages;
         private string _username;
 
         private readonly Chat _chat;
 
-        public MyTabItemViewModel(Chat chat)
+        public ChatViewModel(Chat chat)
         {
-            model = new MyTabItemModel();
+            model = new ChatItemModel();
             Username = chat.receiverUsername + "#" + chat.receiverId;
             _chat = chat;
             DisplayChatMessages();

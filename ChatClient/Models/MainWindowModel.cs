@@ -21,14 +21,14 @@ namespace ChatClient.Models
 
         public Account Account { get; set; }
         //public ObservableCollection<MyTabItemContainer> Chats { get; set; }
-        public ObservableCollection<ChatTabItem> ChatsToDisplay { get; set; }
-        public ChatTabItem CurrentChat { get; set; } = null;
+        public ObservableCollection<ChatView> ChatsToDisplay { get; set; }
+        public ChatView CurrentChat { get; set; } = null;
 
         public string FullUsername { get; set; }
 
         private MainWindowModel() 
         {
-            ChatsToDisplay = new ObservableCollection<ChatTabItem>();
+            ChatsToDisplay = new ObservableCollection<ChatView>();
         }
     }
 }

@@ -69,7 +69,11 @@
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" IsDefault="True" Command="{Binding Login}" CommandParameter="{Binding  ElementName=LoginWindowInstance}" Content="Login" Foreground="White"/>
+                <Button Grid.Column="0" IsDefault="True" Command="{Binding Login}" CommandParameter="{Binding  ElementName=LoginWindowInstance}" Content="Login" Foreground="White"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding InProgress}"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding InProgress}"/>
                 <Button Grid.Column="2" Command="{Binding OpenRegisterWindow}" CommandParameter="{Binding  ElementName=LoginWindowInstance}" Content="Register" Foreground="White"/>
             </Grid>
         </Grid>

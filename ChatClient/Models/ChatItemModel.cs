@@ -6,12 +6,12 @@ using System.Text;
 
 namespace ChatClient.Models
 {
-    public class MyTabItemModel
+    public class ChatItemModel
     {
         public ObservableCollection<IMessageUserControl> Messages { get; set; }
         public string Username { get; set; }
 
-        public MyTabItemModel()
+        public ChatItemModel()
         {
             Messages = new ObservableCollection<IMessageUserControl>();
         }
