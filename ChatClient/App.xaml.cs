@@ -2,6 +2,8 @@
 using ChatClient.States.Authenticators;
 using ChatClient.ViewModels;
 using ChatClient.Views;
+using CryptographyServices.DecryptionServices;
+using CryptographyServices.EncryptionServices;
 using CryptographyServices.KeyExchangeServices;
 using Microsoft.Extensions.DependencyInjection;
 using Services.AuthServices;
@@ -33,6 +35,8 @@ namespace ChatClient
 
             services.AddSingleton<ChatClientDbContextFactory>();
             services.AddSingleton<IDiffieHellmanKeyExchangeService, DiffieHellmanKeyExchangeService>();
+            services.AddSingleton<IDiffieHellmanDecryptionService, DiffieHellmanDecryptionService>();
+            services.AddSingleton<IDiffieHellmanEncryptionService, DiffieHellmanEncryptionService>();
             services.AddSingleton<IAccountDataService, AccountDataService>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IAuthenticator, Authenticator>();

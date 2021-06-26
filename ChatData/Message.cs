@@ -12,7 +12,9 @@ namespace ChatData
         public int ReceiverUniqueId { get; set; }
         public MessageStatus Status { get; set; }
         public MessageType Type { get; set; }
+        public byte[] IV { get; set; }
 
-        public string EncryptedMessageString;
+        public string MessageString;
+        public byte[] EncryptedMessage;
     }
 }

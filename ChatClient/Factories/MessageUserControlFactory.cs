@@ -8,7 +8,7 @@ namespace ChatClient.Factories
     {
         public static IMessageUserControl Create(Message msg)
         {
-            UserControlMessageViewModel dataContext = new UserControlMessageViewModel(msg.EncryptedMessageString, msg.Timestamp);
+            UserControlMessageViewModel dataContext = new UserControlMessageViewModel(msg.MessageString, msg.Timestamp);
 
             return msg.Type switch
             {

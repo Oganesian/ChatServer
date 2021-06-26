@@ -51,15 +51,14 @@ namespace ChatClient.ViewModels
                     SenderUniqueId = sender.Id,
                     ReceiverUniqueId = targetChat.GetReceiverUniqueId(),
                     Timestamp = DateTime.Now,
-                    EncryptedMessageString = TextMessage,
+                    MessageString = TextMessage,
                     Type = MessageType.OUTGOING,
                     Status = MessageStatus.SENDED
                 };
 
+                targetChat.AddMessage(message);
                 sender.SendMessage(message);
                 TextMessage = string.Empty;
-
-                targetChat.AddMessage(message);
 
                 // if(sender.SendMessage(message)) { ...
                 

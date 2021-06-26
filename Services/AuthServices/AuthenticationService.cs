@@ -1,4 +1,6 @@
 ﻿using AccountAndConnection;
+using CryptographyServices.DecryptionServices;
+using CryptographyServices.EncryptionServices;
 using CryptographyServices.KeyExchangeServices;
 using Microsoft.AspNet.Identity;
 using Services.DataServices;
@@ -12,11 +14,15 @@ namespace Services.AuthServices
     {
         private readonly IAccountDataService _accountDataService;
         private readonly IDiffieHellmanKeyExchangeService _keyExchangeService;
+        private readonly IDiffieHellmanEncryptionService _messageEncryptionService;
+        private readonly IDiffieHellmanDecryptionService _messageDecryptionService;
 
-        public AuthenticationService(IAccountDataService accountDataService, IDiffieHellmanKeyExchangeService keyExchangeService)
+        public AuthenticationService(IAccountDataService accountDataService, IDiffieHellmanKeyExchangeService keyExchangeService, IDiffieHellmanEncryptionService messageEncryptionService, IDiffieHellmanDecryptionService messageDecryptionService)
         {
             _accountDataService = accountDataService;
             _keyExchangeService = keyExchangeService;
+            _messageEncryptionService = messageEncryptionService;
+            _messageDecryptionService = messageDecryptionService;
         }
 
         public async Task<BaseAccount> Login(string email, string password)
@@ -59,7 +65,7 @@ namespace Services.AuthServices
                 IPasswordHasher hasher = new PasswordHasher();
                 string passwordHash = hasher.HashPassword(password);
 
-                Account account = new Account(_keyExchangeService)
+                Account account = new Account(_keyExchangeService, _messageEncryptionService, _messageDecryptionService)
                 {
                     Email = email,
                     Username = username,

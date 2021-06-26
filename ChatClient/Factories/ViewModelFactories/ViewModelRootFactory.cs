@@ -1,6 +1,8 @@
 ﻿using ChatClient.Factories.WindowFactories;
 using ChatClient.States.Authenticators;
 using ChatClient.ViewModels;
+using CryptographyServices.DecryptionServices;
+using CryptographyServices.EncryptionServices;
 using CryptographyServices.KeyExchangeServices;
 using System;
 
@@ -10,6 +12,8 @@ namespace ChatClient.Factories.ViewModelFactories
     {
         private readonly IAuthenticator _authenticator;
         private readonly IDiffieHellmanKeyExchangeService _keyExchangeService;
+        private readonly IDiffieHellmanEncryptionService _messageEncryptionService;
+        private readonly IDiffieHellmanDecryptionService _messageDecryptionService;
         private readonly IWindowFactory _windowFactory;
 
         public ViewModelRootFactory(IAuthenticator authenticator, IWindowFactory windowFactory, IDiffieHellmanKeyExchangeService keyExchangeService)
@@ -23,7 +27,7 @@ namespace ChatClient.Factories.ViewModelFactories
         {
             return type switch
             {
-                ViewType.MainWindow => MainWindowViewModel.GetInstance(_authenticator, _keyExchangeService),
+                ViewType.MainWindow => MainWindowViewModel.GetInstance(_authenticator, _keyExchangeService, _messageEncryptionService, _messageDecryptionService),
                 ViewType.LoginWindow => new LoginViewModel(_authenticator, _windowFactory),
                 ViewType.RegisterWindow => new RegisterViewModel(_authenticator, _windowFactory),
                 _ => throw new Exception(),
