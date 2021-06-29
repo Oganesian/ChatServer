@@ -138,7 +138,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public void DisplayChats() // TODO: was private
+        public void DisplayChats() 
         {
             Chats = new List<ChatItemContainer>();
             ChatsToDisplay = new ObservableCollection<ChatView>();
@@ -146,7 +146,7 @@ namespace ChatClient.ViewModels
             foreach (var chat in Account.Chats)
             {
                 Chats.Add(ChatItemContainerFactory.Create(chat));
-                ChatsToDisplay.Add(Chats[^1].ChatItem); // TODO: wtf
+                ChatsToDisplay.Add(Chats[^1].ChatItem);
             }
         }
 

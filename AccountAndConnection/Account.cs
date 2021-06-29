@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace AccountAndConnection
 {
@@ -50,12 +51,21 @@ namespace AccountAndConnection
         }
 
 
-        public Account(IDiffieHellmanKeyExchangeService keyExchangeService, IDiffieHellmanEncryptionService messageEncryptionService, IDiffieHellmanDecryptionService messageDecryptionService)
+        public Account(IDiffieHellmanKeyExchangeService keyExchangeService, IDiffieHellmanEncryptionService messageEncryptionService, IDiffieHellmanDecryptionService messageDecryptionService, string email, string username, string passwordHash)
         {
             _keyExchangeService = keyExchangeService;
-            InitializeAccount();
             _messageEncryptionService = messageEncryptionService;
             _messageDecryptionService = messageDecryptionService;
+
+            Email = email;
+            Username = username;
+            PasswordHash = passwordHash;
+            PublicId = new Random().Next(1000, 9999);
+
+            string fullPath = "Chats/" + Username + PublicId + "/";
+
+            if (!Directory.Exists(fullPath))
+                Directory.CreateDirectory(fullPath);
         }
 
         public Account(IDiffieHellmanKeyExchangeService keyExchangeService, BaseAccount account, IDiffieHellmanEncryptionService messageEncryptionService, IDiffieHellmanDecryptionService messageDecryptionService)

@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace ChatServer
 {
-    class ServerManager
+    public class ServerManager
     {
         static Thread listenThread;
         static Server server;
@@ -26,6 +26,5 @@ namespace ChatServer
                 Console.WriteLine(ex.Message);
             }
         }
-
     }
 }

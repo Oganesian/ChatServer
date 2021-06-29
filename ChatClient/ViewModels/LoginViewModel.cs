@@ -2,7 +2,6 @@
 using ChatClient.States.Authenticators;
 using ChatClient.Views;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ChatClient.ViewModels

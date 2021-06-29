@@ -65,12 +65,7 @@ namespace Services.AuthServices
                 IPasswordHasher hasher = new PasswordHasher();
                 string passwordHash = hasher.HashPassword(password);
 
-                Account account = new Account(_keyExchangeService, _messageEncryptionService, _messageDecryptionService)
-                {
-                    Email = email,
-                    Username = username,
-                    PasswordHash = passwordHash
-                };
+                Account account = new Account(_keyExchangeService, _messageEncryptionService, _messageDecryptionService, email, username, passwordHash);
 
                 await _accountDataService.Create(account);
             }
