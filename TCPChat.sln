@@ -9,15 +9,30 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "ChatClient\Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClientTests", "ChatClientTests\ChatClientTests.csproj", "{C32D22B3-1DF7-41DA-AD47-573206EC1FFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatData", "ChatData\ChatData.csproj", "{562C7D81-D007-43A5-8A17-620E457208BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatData", "ChatData\ChatData.csproj", "{562C7D81-D007-43A5-8A17-620E457208BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serialization\Serialization.csproj", "{5D78B026-8BA1-4115-AB0B-5B0AAC42D641}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization", "Serialization\Serialization.csproj", "{5D78B026-8BA1-4115-AB0B-5B0AAC42D641}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndConnection", "AccountAndConnection\AccountAndConnection.csproj", "{B08C348A-B749-468F-8503-7F111DD6B8DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndConnection", "AccountAndConnection\AccountAndConnection.csproj", "{B08C348A-B749-468F-8503-7F111DD6B8DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{12B8A8C0-9133-4721-ABA3-C814A37C7FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{12B8A8C0-9133-4721-ABA3-C814A37C7FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptographyServices", "CryptographyServices\CryptographyServices.csproj", "{D8E833EC-6A3F-4193-81B4-019108CA808F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptographyServices", "CryptographyServices\CryptographyServices.csproj", "{D8E833EC-6A3F-4193-81B4-019108CA808F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataBaseDump", "DataBaseDump", "{415E46EB-E585-4C93-88DA-A6F01292F7D6}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\tcpchat.sql = ..\..\..\Downloads\tcpchat.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectPresentationDE", "ProjectPresentationDE", "{E9108463-57EB-4E79-88DA-B11BBA515483}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\OneDrive\Desktop\shkila\LF6\Projektpräsentation - Karen Oganesian.pptx = ..\..\..\OneDrive\Desktop\shkila\LF6\Projektpräsentation - Karen Oganesian.pptx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectDocumentationDE", "ProjectDocumentationDE", "{189DE20B-A434-4408-8B1E-BE4046837DA5}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\OneDrive\Desktop\shkila\LF6\Projektdokumentation - Karen Oganesian.docx = ..\..\..\OneDrive\Desktop\shkila\LF6\Projektdokumentation - Karen Oganesian.docx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
